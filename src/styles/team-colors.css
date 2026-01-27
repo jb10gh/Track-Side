@@ -1,0 +1,191 @@
+/* Track Side Team Color System - Dominant Black & Pink Theme */
+/* Hot pink theme for our team with pink-dominant colors for opponents */
+
+:root {
+  /* Track Side Brand - Hot Pink Theme */
+  --team-our-primary: #FF1493;
+  --team-our-light: #FF69B4;
+  --team-our-dark: #C71585;
+  --team-our-bg: rgba(255, 20, 147, 0.15);
+  --team-our-border: #FF1493;
+  --team-our-text: #ffffff;
+  --team-our-shadow: 0 0 40px rgba(255, 20, 147, 0.9);
+  
+  /* Opponent Team - Pink-Dominant Contrasting Colors */
+  --team-their-primary: #FF007F;
+  --team-their-light: #FF69B4;
+  --team-their-dark: #C71585;
+  --team-their-bg: rgba(255, 0, 127, 0.15);
+  --team-their-border: #FF007F;
+  --team-their-text: #ffffff;
+  --team-their-shadow: 0 0 40px rgba(255, 0, 127, 0.9);
+  
+  /* Alternative Opponent Colors - Pink Variations */
+  --team-their-neon: #FF69B4;
+  --team-their-neon-light: #FFB6C1;
+  --team-their-neon-dark: #FF1493;
+  --team-their-neon-bg: rgba(255, 105, 180, 0.15);
+  --team-their-neon-shadow: 0 0 40px rgba(255, 105, 180, 0.9);
+  
+  --team-their-deep: #C71585;
+  --team-their-deep-light: #FF1493;
+  --team-their-deep-dark: #8B008B;
+  --team-their-deep-bg: rgba(199, 21, 133, 0.15);
+  --team-their-deep-shadow: 0 0 40px rgba(199, 21, 133, 0.9);
+  
+  --team-their-bright: #FFB6C1;
+  --team-their-bright-light: #FFC0CB;
+  --team-their-bright-dark: #FF69B4;
+  --team-their-bright-bg: rgba(255, 182, 193, 0.15);
+  --team-their-bright-shadow: 0 0 40px rgba(255, 182, 193, 0.9);
+  
+  --team-their-electric: #FF007F;
+  --team-their-electric-light: #FF1493;
+  --team-their-electric-dark: #C71585;
+  --team-their-electric-bg: rgba(255, 0, 127, 0.15);
+  --team-their-electric-shadow: 0 0 40px rgba(255, 0, 127, 0.9);
+  
+  --team-their-rose: #E11D48;
+  --team-their-rose-light: #F43F5E;
+  --team-their-rose-dark: #BE123C;
+  --team-their-rose-bg: rgba(225, 29, 72, 0.15);
+  --team-their-rose-shadow: 0 0 40px rgba(225, 29, 72, 0.9);
+  --team-their-purple-bg: rgba(147, 112, 219, 0.1);
+  --team-their-purple-shadow: 0 0 30px rgba(147, 112, 219, 0.8);
+  
+  /* Semantic Color Mappings */
+  --score-our-color: var(--team-our-primary);
+  --score-their-color: var(--team-their-primary);
+  --event-our-bg: var(--team-our-bg);
+  --event-our-border: var(--team-our-border);
+  --event-their-bg: var(--team-their-bg);
+  --event-their-border: var(--team-their-border);
+  --button-our: var(--team-our-primary);
+  --button-their: var(--team-their-primary);
+  --accent-our: var(--team-our-light);
+  --accent-their: var(--team-their-light);
+  
+  /* Enhanced Visual Effects */
+  --glow-our: var(--team-our-shadow);
+  --glow-their: var(--team-their-shadow);
+  --border-our: 2px solid var(--team-our-primary);
+  --border-their: 2px solid var(--team-their-primary);
+  --text-on-blue: #1e3a8a;
+  --text-on-light-pink: #831843;
+  --text-on-light-blue: #1e3a8a;
+}
+
+/* Dark theme support */
+@media (prefers-color-scheme: dark) {
+  :root {
+    /* Adjust colors for dark mode while maintaining pink theme */
+    --team-our-primary: #f9a8d4;
+    --team-our-light: #fce7f3;
+    --team-our-dark: #ec4899;
+    --team-our-bg: #831843;
+    --team-our-border: #f9a8d4;
+    
+    --team-their-primary: #93c5fd;
+    --team-their-light: #dbeafe;
+    --team-their-dark: #3b82f6;
+    --team-their-bg: #1e3a8a;
+    --team-their-border: #93c5fd;
+    
+    /* Dark mode semantic mappings */
+    --score-our-color: var(--team-our-primary);
+    --score-their-color: var(--team-their-primary);
+    --event-our-bg: var(--team-our-bg);
+    --event-our-border: var(--team-our-border);
+    --event-their-bg: var(--team-their-bg);
+    --event-their-border: var(--team-their-border);
+  }
+}
+
+/* Component-specific color classes */
+.score-our {
+  color: var(--score-our-color);
+}
+
+.score-their {
+  color: var(--score-their-color);
+}
+
+.event-our {
+  background-color: var(--event-our-bg);
+  border-color: var(--event-our-border);
+  color: var(--text-on-pink);
+}
+
+.event-their {
+  background-color: var(--event-their-bg);
+  border-color: var(--event-their-border);
+  color: var(--text-on-blue);
+}
+
+.button-our {
+  background-color: var(--button-our);
+  color: white;
+}
+
+.button-their {
+  background-color: var(--button-their);
+  color: white;
+}
+
+/* Team color variants for opponents */
+.team-their-green {
+  --team-their-primary: var(--team-their-green);
+  --team-their-light: var(--team-their-green-light);
+  --team-their-dark: var(--team-their-green-dark);
+  --team-their-bg: var(--team-their-green-bg);
+  --team-their-border: var(--team-their-green);
+}
+
+.team-their-purple {
+  --team-their-primary: var(--team-their-purple);
+  --team-their-light: var(--team-their-purple-light);
+  --team-their-dark: var(--team-their-purple-dark);
+  --team-their-bg: var(--team-their-purple-bg);
+  --team-their-border: var(--team-their-purple);
+}
+
+.team-their-orange {
+  --team-their-primary: var(--team-their-orange);
+  --team-their-light: var(--team-their-orange-light);
+  --team-their-dark: var(--team-their-orange-dark);
+  --team-their-bg: var(--team-their-orange-bg);
+  --team-their-border: var(--team-their-orange);
+}
+
+/* Animation classes for color transitions */
+.team-color-transition {
+  transition: background-color 0.3s ease, border-color 0.3s ease, color 0.3s ease;
+}
+
+/* Hover states with team colors */
+.button-our:hover {
+  background-color: var(--team-our-dark);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(236, 72, 153, 0.3);
+}
+
+.button-their:hover {
+  background-color: var(--team-their-dark);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
+}
+
+/* Focus states for accessibility */
+.button-our:focus,
+.button-their:focus {
+  outline: 2px solid;
+  outline-offset: 2px;
+}
+
+.button-our:focus {
+  outline-color: var(--team-our-primary);
+}
+
+.button-their:focus {
+  outline-color: var(--team-their-primary);
+}

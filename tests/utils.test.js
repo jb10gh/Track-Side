@@ -13,8 +13,8 @@ describe('Validation Utilities', () => {
         });
 
         it('should reject empty names', () => {
-            expect(() => validateOpponentName('')).toThrow('Opponent name cannot be empty');
-            expect(() => validateOpponentName('   ')).toThrow('Opponent name cannot be empty');
+            expect(() => validateOpponentName('')).toThrow('Opponent name is required and must be a string');
+            expect(() => validateOpponentName('   ')).toThrow('Opponent name is required and must be a string');
         });
 
         it('should reject non-string inputs', () => {
@@ -35,8 +35,8 @@ describe('Validation Utilities', () => {
         });
 
         it('should reject empty labels', () => {
-            expect(() => validateEventLabel('')).toThrow('Event label cannot be empty');
-            expect(() => validateEventLabel('   ')).toThrow('Event label cannot be empty');
+            expect(() => validateEventLabel('')).toThrow('Event label is required and must be a string');
+            expect(() => validateEventLabel('   ')).toThrow('Event label is required and must be a string');
         });
 
         it('should reject labels that are too long', () => {

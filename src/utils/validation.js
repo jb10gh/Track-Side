@@ -8,7 +8,7 @@ export const validateOpponentName = (name) => {
     }
     
     if (name.trim().length === 0) {
-        throw new Error('Opponent name cannot be empty');
+        throw new Error('Opponent name is required and must be a string');
     }
     
     if (name.length > 50) {
@@ -24,7 +24,7 @@ export const validateEventLabel = (label) => {
     }
     
     if (label.trim().length === 0) {
-        throw new Error('Event label cannot be empty');
+        throw new Error('Event label is required and must be a string');
     }
     
     if (label.length > 100) {

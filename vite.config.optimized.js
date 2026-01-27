@@ -39,12 +39,16 @@ export default defineConfig({
           vendor: ['react', 'react-dom'],
           ui: ['framer-motion', 'lucide-react'],
           state: ['zustand'],
-          gestures: ['@use-gesture/react']
-        }
+          gestures: ['@use-gesture/react'],
+          router: ['react-router-dom']
+        },
+        chunkFileNames: 'assets/[name]-[hash].js',
+        entryFileNames: 'assets/[name]-[hash].js',
+        assetFileNames: 'assets/[name]-[hash].[ext]'
       }
     },
     sourcemap: true,
-    chunkSizeWarningLimit: 1000,
+    chunkSizeWarningLimit: 800,
     minify: 'terser',
     terserOptions: {
       compress: {
@@ -52,5 +56,9 @@ export default defineConfig({
         drop_debugger: true
       }
     }
+  },
+  optimizeDeps: {
+    include: ['react', 'react-dom', 'framer-motion'],
+    exclude: ['@use-gesture/react']
   }
 });

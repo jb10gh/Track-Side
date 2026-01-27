@@ -5,11 +5,12 @@ import { ClipboardCheck, Share2, X, FileDown, Settings, ChevronDown } from 'luci
 import { useGameStoreClean, EVENT_TYPES, TEAMS } from '../store/gameStoreClean';
 import { Shell } from '../components/layout/Shell';
 import { GameModal } from '../components/game/GameModal';
+import { ExportDecisionModal } from '../components/game/ExportDecisionModal';
 import { GestureDeckOptimized } from '../components/game/GestureDeckOptimized';
 import { FloatingHUD } from '../components/game/FloatingHUD';
 import { SwipeStream } from '../components/game/SwipeStream';
 import { useGameTimer } from '../hooks/useGameTimer';
-import { downloadCSV } from '../utils/export';
+import { downloadCSV, copyEnhancedSummary } from '../utils/export';
 
 export const ActiveGamePro = () => {
     const navigate = useNavigate();
@@ -22,6 +23,7 @@ export const ActiveGamePro = () => {
         isRunning,
         toggleTimer,
         formatTime,
+        formatTimeForExport,
         addEvent,
         undoLastEvent,
         finishGame,
@@ -34,6 +36,7 @@ export const ActiveGamePro = () => {
     const [copied, setCopied] = useState(false);
     const [confirmingFinish, setConfirmingFinish] = useState(false);
     const [showSettings, setShowSettings] = useState(false);
+    const [showExportModal, setShowExportModal] = useState(false);
 
     if (!activeGameId) return <Navigate to="/" />;
 
@@ -53,6 +56,22 @@ export const ActiveGamePro = () => {
     }, [editingEvent, modalState, addEvent, updateEvent]);
 
     const handleFinish = useCallback(() => {
+        setShowExportModal(true);
+    }, []);
+
+    const handleCopyAndFinish = useCallback(async () => {
+        await copyEnhancedSummary({ opponentName, myScore, opponentScore, events }, formatTime, formatTimeForExport);
+        finishGame();
+        navigate('/');
+    }, [finishGame, navigate]);
+
+    const handleDownloadAndFinish = useCallback(async () => {
+        downloadCSV({ opponentName, myScore, opponentScore, events });
+        finishGame();
+        navigate('/');
+    }, [finishGame, navigate, opponentName, myScore, opponentScore, events]);
+
+    const handleSkipAndFinish = useCallback(() => {
         finishGame();
         navigate('/');
     }, [finishGame, navigate]);
@@ -307,6 +326,15 @@ export const ActiveGamePro = () => {
                     setModalState({ isOpen: false, type: '', team: '' });
                     setEditingEvent(null);
                 }}
+            />
+
+            {/* Export Decision Modal */}
+            <ExportDecisionModal
+                isOpen={showExportModal}
+                gameData={{ opponentName, myScore, opponentScore, events }}
+                onCopy={handleCopyAndFinish}
+                onDownload={handleDownloadAndFinish}
+                onSkip={handleSkipAndFinish}
             />
         </div>
     );

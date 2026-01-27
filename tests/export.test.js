@@ -59,10 +59,11 @@ describe('Export Utilities', () => {
 
         downloadCSV(mockGame);
 
+        // Check that setAttribute was called with 'download' attribute
         const linkElement = global.document.createElement.mock.results[0].value;
         expect(linkElement.setAttribute).toHaveBeenCalledWith(
             'download',
-            expect.stringMatching(/^match-Test-Team-\d{4}-\d{2}-\d{2}\.csv$/)
+            expect.stringMatching(/^match-Test Team-\d{4}-\d{2}-\d{2}\.csv$/)
         );
     });
 });

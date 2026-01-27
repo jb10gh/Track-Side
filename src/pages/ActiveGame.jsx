@@ -4,11 +4,15 @@ import { ClipboardCheck, Share2, X, FileDown } from 'lucide-react';
 import { useGameStore, EVENT_TYPES, TEAMS } from '../store/gameStore';
 import { Shell } from '../components/layout/Shell';
 import { GameModal } from '../components/game/GameModal';
+import { ExportDecisionModal } from '../components/game/ExportDecisionModal';
+import { SimplifiedExport } from '../components/game/SimplifiedExport';
+import { TimerInvocationModal } from '../components/game/TimerInvocationModal';
 import { ScoreBoard } from '../components/game/ScoreBoard';
 import { ActionGrid } from '../components/game/ActionGrid';
 import { EventTimeline } from '../components/game/EventTimeline';
 import { useGameTimer } from '../hooks/useGameTimer';
-import { downloadCSV } from '../utils/export';
+import { downloadCSV, copyEnhancedSummary } from '../utils/export';
+import { TrackSideHeader, TrackSideWatermark } from '../components/brand/TrackSideLogo';
 
 export const ActiveGame = () => {
     const navigate = useNavigate();
@@ -21,6 +25,12 @@ export const ActiveGame = () => {
         isRunning,
         toggleTimer,
         formatTime,
+        formatTimeForExport,
+        timerInvocation,
+        invokeTimer,
+        startTimerWithConfirmation,
+        dismissTimerReminder,
+        checkTimerState,
         addEvent,
         undoLastEvent,
         finishGame,
@@ -32,6 +42,32 @@ export const ActiveGame = () => {
     const [editingEvent, setEditingEvent] = useState(null);
     const [copied, setCopied] = useState(false);
     const [confirmingFinish, setConfirmingFinish] = useState(false);
+    const [showExportModal, setShowExportModal] = useState(false);
+    const [showTimerModal, setShowTimerModal] = useState(false);
+    const [showSimplifiedExport, setShowSimplifiedExport] = useState(false);
+    const [gameFinished, setGameFinished] = useState(false);
+
+    // CRITICAL FIX: Ensure share workflow never appears on game start
+    React.useEffect(() => {
+        // Double-check that share workflow is never shown on game start
+        if (showSimplifiedExport && !gameFinished) {
+            console.warn('Share workflow shown prematurely - fixing state');
+            setShowSimplifiedExport(false);
+        }
+    }, [showSimplifiedExport, gameFinished]);
+
+    // Check timer state on component mount and first event
+    React.useEffect(() => {
+        checkTimerState();
+    }, []);
+
+    // Show timer modal on first event if timer not running
+    React.useEffect(() => {
+        if (events.length === 1 && !isRunning && !timerInvocation.reminderDismissed) {
+            setShowTimerModal(true);
+            invokeTimer('first_event');
+        }
+    }, [events.length, isRunning]);
 
     if (!activeGameId) return <Navigate to="/" />;
 
@@ -50,6 +86,24 @@ export const ActiveGame = () => {
     };
 
     const handleFinish = () => {
+        // CRITICAL FIX: Mark game as finished BEFORE showing export
+        setGameFinished(true);
+        setShowSimplifiedExport(true);
+    };
+
+    const handleCopyAndFinish = async () => {
+        await copyEnhancedSummary({ opponentName, myScore, opponentScore, events }, formatTime, formatTimeForExport);
+        finishGame();
+        navigate('/');
+    };
+
+    const handleDownloadAndFinish = async () => {
+        downloadCSV({ opponentName, myScore, opponentScore, events });
+        finishGame();
+        navigate('/');
+    };
+
+    const handleSkipAndFinish = () => {
         finishGame();
         navigate('/');
     };
@@ -94,7 +148,7 @@ export const ActiveGame = () => {
                     <button onClick={() => setConfirmingFinish(false)} className="btn-ghost p-2 text-[var(--text-secondary)]">
                         <X size={18} />
                     </button>
-                    <button onClick={handleFinish} className="bg-[var(--color-danger)] text-white px-3 py-1.5 rounded-lg">
+                    <button onClick={handleFinish} className="bg-gradient-to-r from-[#FF1493] to-[#FF007F] hover:from-[#FF69B4] hover:to-[#FF1493] text-white px-3 py-1.5 rounded-lg font-bold text-[10px] uppercase tracking-widest transition-all transform hover:scale-105 shadow-lg" style={{ boxShadow: '0 4px 20px rgba(255, 20, 147, 0.4)' }}>
                         <span className="text-[10px] font-black uppercase tracking-widest">Finish?</span>
                     </button>
                 </>
@@ -104,6 +158,30 @@ export const ActiveGame = () => {
 
     return (
         <Shell title={`vs ${opponentName}`} headerAction={<HeaderActions />}>
+            {/* Track Side Header */}
+            <TrackSideHeader 
+              title={`vs ${opponentName}`} 
+              subtitle="Track Side Analytics" 
+              showLogo={true} 
+            />
+            
+            {/* Enhanced Opponent Name Display */}
+            <div className="opponent-header mb-6">
+                <div className="text-center">
+                    <div className="text-sm text-[var(--text-secondary)] uppercase tracking-wider mb-2">
+                        VS
+                    </div>
+                    <div className="text-3xl font-black text-white mb-2" style={{ 
+                        textShadow: 'var(--glow-hot-pink)' 
+                    }}>
+                        {opponentName}
+                    </div>
+                    <div className="text-xs text-[var(--text-secondary)] uppercase tracking-wider">
+                        Opponent
+                    </div>
+                </div>
+            </div>
+            
             <div className="flex flex-col gap-8 py-4 pb-40">
                 <ScoreBoard 
                     myScore={myScore} 
@@ -135,6 +213,45 @@ export const ActiveGame = () => {
                     setEditingEvent(null);
                 }}
             />
+
+            {/* CRITICAL FIX: Only show SimplifiedExport when game is actually finished */}
+            {showSimplifiedExport && (
+                <SimplifiedExport
+                    matchData={{ opponentName, myScore, opponentScore, events, timestamp: Date.now(), finalTime: displayTime }}
+                    onClose={() => {
+                        setShowSimplifiedExport(false);
+                        finishGame();
+                        navigate('/');
+                    }}
+                />
+            )}
+
+            <ExportDecisionModal
+                isOpen={showExportModal}
+                gameData={{ opponentName, myScore, opponentScore, events }}
+                onCopy={handleCopyAndFinish}
+                onDownload={handleDownloadAndFinish}
+                onSkip={handleSkipAndFinish}
+            />
+
+            <TimerInvocationModal
+                isOpen={showTimerModal}
+                trigger={timerInvocation.lastInvocationTrigger}
+                onStart={() => {
+                    startTimerWithConfirmation();
+                    setShowTimerModal(false);
+                }}
+                onSkip={() => {
+                    dismissTimerReminder();
+                    setShowTimerModal(false);
+                }}
+                onDismiss={() => {
+                    setShowTimerModal(false);
+                }}
+            />
+            
+            {/* TrackSide Watermark */}
+            <TrackSideWatermark opacity={0.1} />
         </Shell>
     );
 };

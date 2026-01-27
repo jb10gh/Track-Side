@@ -98,3 +98,5 @@ tests/coverage/
 
 # Skills directory (not needed for deployment)
 .windsurf/
+.vercel
+.env*.local
