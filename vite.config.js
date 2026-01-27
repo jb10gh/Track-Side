@@ -9,10 +9,10 @@ export default defineConfig({
             registerType: 'autoUpdate',
             includeAssets: ['favicon.ico', 'pwa-icon.png'],
             manifest: {
-                name: 'Sideline Stats',
-                short_name: 'Sideline',
-                description: 'Professional High-Precision Gamekeeping',
-                theme_color: '#000000',
+                name: 'TrackSide',
+                short_name: 'TrackSide',
+                description: 'Professional Sports Tracking App',
+                theme_color: '#ff6b35',
                 background_color: '#000000',
                 display: 'standalone',
                 icons: [
