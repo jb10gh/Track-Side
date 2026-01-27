@@ -56,35 +56,19 @@ export const SimplifiedExport = ({ matchData, onClose }) => {
 
   const handleCSVDownload = () => {
     try {
-      // CSV download logic here
-      const csvContent = generateCSV(matchData);
-      downloadCSV(csvContent, `track-side-match-${Date.now()}.csv`);
+      nativeEmailService.generateCSVDownload(matchData);
+      setShareResult({
+        success: true,
+        message: 'CSV downloaded successfully!',
+        details: 'File ready to email'
+      });
     } catch (error) {
-      console.error('CSV download failed:', error);
+      setShareResult({
+        success: false,
+        message: 'Download failed',
+        details: 'Please try again'
+      });
     }
-  };
-
-  const generateCSV = (data) => {
-    // CSV generation logic
-    const headers = ['Time', 'Event', 'Team', 'Player'];
-    const rows = data.events.map(event => [
-      event.gameTime,
-      event.type,
-      event.team,
-      event.label
-    ]);
-    
-    return [headers, ...rows].map(row => row.join(',')).join('\n');
-  };
-
-  const downloadCSV = (content, filename) => {
-    const blob = new Blob([content], { type: 'text/csv' });
-    const url = window.URL.createObjectURL(blob);
-    const a = document.createElement('a');
-    a.href = url;
-    a.download = filename;
-    a.click();
-    window.URL.revokeObjectURL(url);
   };
 
   return (
@@ -95,7 +79,7 @@ export const SimplifiedExport = ({ matchData, onClose }) => {
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
-          className="absolute inset-0"
+          className="absolute inset-0 modal-overlay"
           onClick={onClose}
           style={{ background: 'var(--modal-overlay)' }}
         />
@@ -153,7 +137,7 @@ export const SimplifiedExport = ({ matchData, onClose }) => {
               className="text-2xl font-bold mb-2"
               style={{
                 color: 'var(--text-primary)',
-                fontWeight: 'var(--font-bold)',
+                fontWeight: 'var(--font-bold'),
                 fontSize: 'var(--text-2xl)',
                 marginBottom: getSpacingValue('sm'),
               }}
@@ -276,26 +260,12 @@ export const SimplifiedExport = ({ matchData, onClose }) => {
             }}
           >
             <div className="flex items-start gap-3">
-              <FileText size={20} style={{ color: 'var(--brand-primary)', marginTop: getSpacingValue('xs') }} />
+              <FileText size={20} className="text-[#FF1493] mt-1" />
               <div>
-                <p 
-                  className="text-sm font-medium mb-1"
-                  style={{
-                    color: 'var(--text-muted)',
-                    fontSize: 'var(--text-sm)',
-                    fontWeight: 'var(--font-medium)',
-                    marginBottom: getSpacingValue('xs')
-                  }}
-                >
-                  📧 Professional Email Sent
+                <p className="text-sm text-gray-300 font-medium mb-1">
+                  � Professional Email Sent
                 </p>
-                <p 
-                  className="text-xs"
-                  style={{
-                    color: 'var(--text-disabled)',
-                    fontSize: 'var(--text-xs)',
-                  }}
-                >
+                <p className="text-xs text-gray-400">
                   Professional match analysis will be sent to your coach. CSV file is available for download if needed.
                 </p>
               </div>
@@ -309,73 +279,65 @@ export const SimplifiedExport = ({ matchData, onClose }) => {
               animate={{ opacity: 1, y: 0 }}
               className={`mt-4 p-3 rounded-lg flex items-center gap-2 ${
                 shareResult.success 
-                  ? 'border-green-500 bg-green-500/10 text-green-400' 
-                  : 'border-red-500 bg-red-500/10 text-red-400'
-              }`}
-              style={{
-                marginTop: getSpacingValue('lg'),
-                padding: getSpacingValue('sm'),
-                borderRadius: 'var(--radius-md)',
-                background: shareResult.success 
-                  ? 'rgba(34, 197, 94, 0.1)' 
-                  : 'rgba(239, 68, 68, 0.1)',
-                border: `1px solid ${shareResult.success ? 'var(--status-success)' : 'var(--status-error)'}`,
-              }}
-            >
-              {shareResult.success ? <Check size={20} /> : <AlertCircle size={20} />}
-              <div>
-                <div className="font-medium">{shareResult.message}</div>
-                {shareResult.details && (
-                  <div className="text-sm opacity-80">{shareResult.details}</div>
-                )}
-              </div>
-            </motion.div>
-          )}
-
-          {/* Close Button */}
-          <button
-            onClick={onClose}
-            className="mt-4 w-full px-4 py-2 rounded-lg transition-colors"
-            style={{
-              marginTop: getSpacingValue('lg'),
-              padding: `${getSpacingValue('sm')} ${getSpacingValue('md')}`,
-              background: 'var(--btn-secondary-bg)',
-              color: 'var(--btn-secondary-text)',
-              border: 'var(--btn-secondary-border)',
-              borderRadius: 'var(--radius-md)',
-              transition: 'var(--transition-normal)',
-            }}
-          >
-            Close
-          </button>
-
-          {/* TrackSide Footer */}
-          <div 
-            className="mt-4 text-center"
-            style={{ marginTop: getSpacingValue('lg') }}
-          >
-            <p 
-              className="text-xs"
-              style={{
-                color: 'var(--text-disabled)',
-                fontSize: 'var(--text-xs)',
-              }}
-            >
-              🚀 Generated by TrackSide App
-            </p>
-            <p 
-              className="text-xs"
-              style={{
-                color: 'var(--text-disabled)',
-                fontSize: 'var(--text-xs)',
-              }}
-            >
-              track-side.vercel.app
             </p>
           </div>
-        </motion.div>
+        </div>
+      ) : (
+        <AlertCircle size={20} />
+      )}
+      <div>
+        <div className="font-medium">{shareResult.message}</div>
+        {shareResult.details && (
+          <div className="text-sm opacity-80">{shareResult.details}</div>
+        )}
       </div>
-    </AnimatePresence>
+    </motion.div>
+  )}
+
+  {/* Close Button */}
+  <button
+    onClick={onClose}
+    className="mt-4 w-full px-4 py-2 rounded-lg transition-colors"
+    style={{
+      marginTop: getSpacingValue('lg'),
+      padding: `${getSpacingValue('sm')} ${getSpacingValue('md')}`,
+      background: 'var(--btn-secondary-bg)',
+      color: 'var(--btn-secondary-text)',
+      border: 'var(--btn-secondary-border)',
+      borderRadius: 'var(--radius-md)',
+      transition: 'var(--transition-normal)',
+    }}
+  >
+    Close
+  </button>
+
+  {/* TrackSide Footer */}
+  <div 
+    className="mt-4 text-center"
+    style={{ marginTop: getSpacingValue('lg') }}
+  >
+    <p 
+      className="text-xs"
+      style={{
+        color: 'var(--text-disabled)',
+        fontSize: 'var(--text-xs)',
+      }}
+    >
+      🚀 Generated by TrackSide App
+    </p>
+    <p 
+      className="text-xs"
+      style={{
+        color: 'var(--text-disabled)',
+        fontSize: 'var(--text-xs)',
+      }}
+    >
+      track-side.vercel.app
+    </p>
+  </div>
+</motion.div>
+</div>
+</AnimatePresence>
   );
 };
 

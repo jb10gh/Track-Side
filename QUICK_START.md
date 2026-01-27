@@ -1,11 +1,11 @@
-# 🚀 Quick Start Guide - Deploy Sideline Stats
+# 🚀 Quick Start Guide - Deploy Track Side
 
 ## 📋 **Step 1: Create GitHub Repository (2 minutes)**
 
 ### Option A: Easy Way (Recommended)
 1. Go to **github.com** and sign in
 2. Click **"New repository"** (green button)
-3. Repository name: `sideline-stats`
+3. Repository name: `track-side`
 4. Description: `Professional Sports Tracking App`
 5. Make it **Public** (free hosting requires public repos)
 6. **Don't** initialize with README (we already have one)
@@ -16,7 +16,7 @@ You'll need to create the repository manually on GitHub, then run:
 
 ```bash
 # Add your GitHub repository as remote
-git remote add origin https://github.com/YOUR_USERNAME/sideline-stats.git
+git remote add origin https://github.com/YOUR_USERNAME/track-side.git
 
 # Push to GitHub
 git branch -M main
@@ -34,7 +34,7 @@ git push -u origin main
 1. Go to **vercel.com** and sign up (free)
 2. Click **"New Project"**
 3. **"Import Git Repository"**
-4. Select your `sideline-stats` repository
+4. Select your `track-side` repository
 5. Click **"Deploy"**
 
 ### Option C: Drag & Drop (Easiest No-Git)
@@ -46,7 +46,7 @@ git push -u origin main
 ## 🎉 **That's It! Your App is Live!**
 
 You'll get a URL like:
-`https://sideline-stats-abc123.vercel.app`
+`https://track-side-abc123.vercel.app`
 
 **Share this URL with anyone - they can use your app immediately!**
 
@@ -64,7 +64,7 @@ You'll get a URL like:
 
 Want your own domain? In Vercel dashboard:
 1. Go to **Domains** tab
-2. Add your domain (e.g., `sideline-stats.com`)
+2. Add your domain (e.g., `track-side.com`)
 3. Update DNS records (Vercel gives exact instructions)
 4. **Free SSL certificate included!**
 

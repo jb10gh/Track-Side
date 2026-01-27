@@ -288,7 +288,7 @@ export const useCoachStore = create(
             }
         }),
         {
-            name: 'sideline-stats-coach-storage',
+            name: 'track-side-coach-storage',
             version: 1
         }
     )

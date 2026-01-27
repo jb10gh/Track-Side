@@ -1,93 +1,20 @@
-@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600;700&display=swap');
+/**
+ * Track Side Application Styles
+ * 
+ * Main stylesheet with unified theme system
+ * Imports theme configuration and global styles
+ */
 
+/* Import unified theme system */
+@import './theme/theme.css';
+
+/* Legacy team colors for backward compatibility */
 @import './styles/team-colors.css';
 
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
-
-:root {
-    /* Dominant Black & Pink Theme */
-    --trackside-hot-pink: #FF1493;
-    --trackside-neon-pink: #FF69B4;
-    --trackside-deep-pink: #C71585;
-    --trackside-bright-pink: #FFB6C1;
-    --trackside-electric-pink: #FF007F;
-    
-    /* Pure Black Background Theme */
-    --bg-primary: #000000;
-    --bg-secondary: #000000;
-    --bg-accent: #0a0a0a;
-    --bg-card: #000000;
-    --bg-hover: #1a1a1a;
-    --bg-active: #2a2a2a;
-    
-    /* High Contrast Text with Pink Accents */
-    --text-primary: #FFFFFF;
-    --text-secondary: #FF1493;
-    --text-muted: #E0E0E0;
-    --text-dim: #B0B0B0;
-    
-    /* Dominant Pink Brand Colors */
-    --color-brand: var(--trackside-hot-pink);
-    --color-brand-light: var(--trackside-neon-pink);
-    --color-brand-dark: var(--trackside-deep-pink);
-    --color-brand-accent: var(--trackside-electric-pink);
-    
-    /* Enhanced Pink Visual Effects */
-    --glow-hot-pink: 0 0 40px rgba(255, 20, 147, 0.9);
-    --glow-neon-pink: 0 0 50px rgba(255, 105, 180, 0.8);
-    --shadow-hot-pink: 0 6px 30px rgba(255, 20, 147, 0.6);
-    --border-hot-pink: 2px solid var(--trackside-hot-pink);
-    
-    /* Component Specific - Pink Dominated */
-    --button-primary: var(--trackside-hot-pink);
-    --button-primary-hover: var(--trackside-neon-pink);
-    --button-primary-active: var(--trackside-deep-pink);
-    --card-background: var(--bg-card);
-    --card-border: 2px solid var(--trackside-hot-pink);
-    --color-success: #FF1493;
-    --color-danger: #FF69B4;
-    --color-warning: #FF007F;
-    --color-info: #C71585;
-    --color-warning: #ffa502;
-    --color-border: #e8e8e8;
-    --color-border-light: #f5f5f5;
-    --shadow-sm: 0 2px 4px rgba(0,0,0,0.04);
-    --shadow-md: 0 4px 12px rgba(0,0,0,0.08);
-    --shadow-lg: 0 8px 24px rgba(0,0,0,0.12);
-    --radius-sm: 8px;
-    --radius-md: 12px;
-    --radius-lg: 16px;
-    --radius-xl: 24px;
-    --safe-area-bottom: env(safe-area-inset-bottom, 0px);
-}
-
-@media (prefers-color-scheme: dark) {
-    :root {
-        --bg-primary: #0a0a0a;
-        --bg-secondary: #1a1a1a;
-        --bg-accent: #2a2a2a;
-        --text-primary: #ffffff;
-        --text-secondary: #a0a0a0;
-        --text-muted: #666666;
-        --color-brand: #ff6b35;
-        --color-brand-light: #ff8c5a;
-        --color-brand-dark: #e55a2b;
-        --color-success: #00d084;
-        --color-danger: #ff4757;
-        --color-warning: #ffa502;
-        --color-border: #2a2a2a;
-        --color-border-light: #1a1a1a;
-        --shadow-sm: 0 2px 4px rgba(0,0,0,0.2);
-        --shadow-md: 0 4px 12px rgba(0,0,0,0.3);
-        --shadow-lg: 0 8px 24px rgba(0,0,0,0.4);
-    }
-}
-
+/* Global styles */
 body {
     margin: 0;
-    font-family: 'Space Grotesk', -apple-system, BlinkMacSystemFont, sans-serif;
+    font-family: var(--font-primary);
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     background-color: var(--bg-primary);
@@ -97,7 +24,7 @@ body {
 }
 
 .font-mono {
-    font-family: 'JetBrains Mono', 'SF Mono', Monaco, 'Cascadia Code', monospace;
+    font-family: var(--font-mono);
 }
 
 @layer components {

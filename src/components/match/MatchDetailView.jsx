@@ -5,6 +5,7 @@ import { useGameStore } from '../../store/gameStore';
 import { copyEnhancedSummary, downloadEnhancedCSV } from '../../utils/export';
 import { EditableEventItem } from './EditableEventItem';
 import { SimplifiedExport } from '../game/SimplifiedExport';
+import { useTheme, useTeamTheme } from '../../theme/useTheme';
 
 export const MatchDetailView = ({ matchId, onClose }) => {
     const { 
@@ -17,6 +18,10 @@ export const MatchDetailView = ({ matchId, onClose }) => {
         formatTimeForExport
     } = useGameStore();
     
+    const { createModalStyles, createButtonStyles, getSpacingValue } = useTheme();
+    const ourTeam = useTeamTheme('our');
+    const theirTeam = useTeamTheme('their');
+
     const [isEditing, setIsEditing] = useState(false);
     const [editingMetadata, setEditingMetadata] = useState(false);
     const [metadata, setMetadata] = useState({});
@@ -68,20 +73,57 @@ export const MatchDetailView = ({ matchId, onClose }) => {
     };
 
     return (
-        <div className="fixed inset-0 z-50 bg-black overflow-y-auto">
+        <div className="fixed inset-0 z-50 overflow-y-auto" style={{ background: 'var(--bg-primary)' }}>
             {/* Header */}
-            <div className="sticky top-0 bg-black border-b-2 border-[var(--trackside-hot-pink)] p-4 z-10" style={{ boxShadow: 'var(--shadow-hot-pink)' }}>
+            <div 
+                className="sticky top-0 p-4 z-10"
+                style={{
+                    ...createModalStyles(),
+                    padding: getSpacingValue('md'),
+                    position: 'sticky',
+                    top: 0,
+                }}
+            >
                 <div className="flex items-center justify-between">
                     <div className="flex items-center gap-4">
                         <button 
                             onClick={onClose} 
-                            className="p-2 rounded-lg border border-[var(--trackside-hot-pink)] hover:bg-[var(--trackside-hot-pink)] transition-colors text-white"
+                            className="p-2 rounded-lg transition-colors"
+                            style={{
+                                border: 'var(--border-primary)',
+                                color: 'var(--text-primary)',
+                                backgroundColor: 'transparent',
+                            }}
+                            onMouseEnter={(e) => {
+                                e.target.style.backgroundColor = 'var(--brand-primary)';
+                                e.target.style.color = 'var(--bg-primary)';
+                            }}
+                            onMouseLeave={(e) => {
+                                e.target.style.backgroundColor = 'transparent';
+                                e.target.style.color = 'var(--text-primary)';
+                            }}
                         >
                             <ArrowLeft size={24} />
                         </button>
                         <div>
-                            <h1 className="text-2xl font-bold text-white" style={{ textShadow: 'var(--glow-hot-pink)' }}>vs {match.opponentName}</h1>
-                            <p className="text-sm text-[var(--text-secondary)]">
+                            <h1 
+                                className="text-2xl font-bold"
+                                style={{
+                                    color: 'var(--text-primary)',
+                                    fontWeight: 'var(--font-bold)',
+                                    fontSize: 'var(--text-2xl)',
+                                    textShadow: 'var(--glow-brand)',
+                                }}
+                            >
+                                vs {match.opponentName}
+                            </h1>
+                            <p 
+                                className="text-sm"
+                                style={{
+                                    color: 'var(--text-secondary)',
+                                    fontSize: 'var(--text-sm)',
+                                }}
+                            >
                                 {new Date(match.timestamp).toLocaleDateString()}
                                 {match.lastEdited && ' • Edited'}
                             </p>
@@ -93,8 +135,11 @@ export const MatchDetailView = ({ matchId, onClose }) => {
                             <>
                                 <button
                                     onClick={() => setIsEditing(true)}
-                                    className="px-4 py-2 bg-gradient-to-r from-[var(--trackside-hot-pink)] to-[var(--trackside-electric-pink)] text-white rounded-lg flex items-center gap-2 hover:from-[var(--trackside-neon-pink)] hover:to-[var(--trackside-hot-pink)] transition-all transform hover:scale-105"
-                                    style={{ boxShadow: 'var(--shadow-hot-pink)' }}
+                                    className="px-4 py-2 rounded-lg flex items-center gap-2 transition-all transform hover:scale-105"
+                                    style={{
+                                        ...createButtonStyles('primary'),
+                                        padding: `${getSpacingValue('sm')} ${getSpacingValue('md')}`,
+                                    }}
                                 >
                                     <Edit3 size={16} />
                                     Edit Match
@@ -107,7 +152,11 @@ export const MatchDetailView = ({ matchId, onClose }) => {
                                         setIsEditing(false);
                                         setEditingMetadata(false);
                                     }}
-                                    className="px-4 py-2 bg-gray-700 text-white rounded-lg flex items-center gap-2 hover:bg-gray-600 transition-colors"
+                                    className="px-4 py-2 rounded-lg flex items-center gap-2 transition-colors"
+                                    style={{
+                                        ...createButtonStyles('secondary'),
+                                        padding: `${getSpacingValue('sm')} ${getSpacingValue('md')}`,
+                                    }}
                                 >
                                     <X size={16} />
                                     Cancel
@@ -120,8 +169,11 @@ export const MatchDetailView = ({ matchId, onClose }) => {
                                         setIsEditing(false);
                                         setEditingMetadata(false);
                                     }}
-                                    className="px-4 py-2 bg-gradient-to-r from-[var(--trackside-hot-pink)] to-[var(--trackside-electric-pink)] text-white rounded-lg flex items-center gap-2 hover:from-[var(--trackside-neon-pink)] hover:to-[var(--trackside-hot-pink)] transition-all transform hover:scale-105"
-                                    style={{ boxShadow: 'var(--shadow-hot-pink)' }}
+                                    className="px-4 py-2 rounded-lg flex items-center gap-2 transition-all transform hover:scale-105"
+                                    style={{
+                                        ...createButtonStyles('primary'),
+                                        padding: `${getSpacingValue('sm')} ${getSpacingValue('md')}`,
+                                    }}
                                 >
                                     <Save size={16} />
                                     Save
@@ -133,27 +185,86 @@ export const MatchDetailView = ({ matchId, onClose }) => {
             </div>
 
             {/* Match Score */}
-            <div className="p-6 text-center bg-black border-2 border-[var(--trackside-hot-pink)]" style={{ boxShadow: 'var(--shadow-hot-pink)' }}>
-                <div className="text-6xl font-black mb-2">
-                    <span className="text-[var(--team-our-primary)]" style={{ textShadow: 'var(--team-our-shadow)' }}>{match.myScore}</span>
-                    <span className="mx-4 text-white">-</span>
-                    <span className="text-[var(--team-their-primary)]" style={{ textShadow: 'var(--team-their-shadow)' }}>{match.opponentScore}</span>
+            <div 
+                className="p-6 text-center rounded-xl"
+                style={{
+                    ...createCardStyles(),
+                    padding: getSpacingValue('lg'),
+                    textAlign: 'center',
+                }}
+            >
+                <div 
+                    className="text-6xl font-black mb-2"
+                    style={{
+                        fontSize: 'var(--text-6xl)',
+                        fontWeight: 'var(--font-black)',
+                        marginBottom: getSpacingValue('sm'),
+                    }}
+                >
+                    <span 
+                        style={{ 
+                            color: ourTeam.colors.primary, 
+                            textShadow: ourTeam.colors.shadow 
+                        }}
+                    >
+                        {match.myScore}
+                    </span>
+                    <span 
+                        className="mx-4"
+                        style={{ 
+                            color: 'var(--text-primary)' 
+                        }}
+                    >
+                        -
+                    </span>
+                    <span 
+                        style={{ 
+                            color: theirTeam.colors.primary, 
+                            textShadow: theirTeam.colors.shadow 
+                        }}
+                    >
+                        {match.opponentScore}
+                    </span>
                 </div>
                 {isEditing ? (
-                    <div className="flex items-center justify-center gap-2">
+                    <div className="flex items-center justify-center gap-2" style={{ gap: getSpacingValue('sm') }}>
                         <input
                             type="text"
                             defaultValue={match.opponentName}
                             onChange={(e) => setMetadata({ ...metadata, opponentName: e.target.value })}
-                            className="text-xl font-semibold bg-black border-2 border-[var(--trackside-hot-pink)] rounded px-3 py-2 text-center text-white placeholder-gray-500"
+                            className="text-xl font-semibold rounded px-3 py-2 text-center"
+                            style={{
+                                backgroundColor: 'var(--bg-surface)',
+                                border: 'var(--border-primary)',
+                                color: 'var(--text-primary)',
+                                borderRadius: 'var(--radius-md)',
+                                padding: `${getSpacingValue('sm')} ${getSpacingValue('md')}`,
+                                boxShadow: 'var(--shadow-button)',
+                            }}
                             placeholder="Opponent name"
-                            style={{ boxShadow: 'var(--shadow-hot-pink)' }}
                         />
                     </div>
                 ) : (
-                    <p className="text-xl font-semibold text-gray-900 dark:text-white">vs {match.opponentName}</p>
+                    <p 
+                        className="text-xl font-semibold"
+                        style={{
+                            color: 'var(--text-primary)',
+                            fontSize: 'var(--text-xl)',
+                            fontWeight: 'var(--font-semibold)',
+                        }}
+                    >
+                        vs {match.opponentName}
+                    </p>
                 )}
-                <div className="flex items-center justify-center gap-4 mt-2 text-sm text-gray-600 dark:text-gray-400">
+                <div 
+                    className="flex items-center justify-center gap-4 mt-2 text-sm"
+                    style={{
+                        gap: getSpacingValue('md'),
+                        marginTop: getSpacingValue('sm'),
+                        color: 'var(--text-muted)',
+                        fontSize: 'var(--text-sm)',
+                    }}
+                >
                     <span>{match.events.length} events</span>
                     <span>•</span>
                     <span>Duration: {formatTime(match.finalTime) || 'Unknown'}</span>
@@ -161,15 +272,28 @@ export const MatchDetailView = ({ matchId, onClose }) => {
             </div>
 
             {/* Events List */}
-            <div className="p-4">
-                <div className="flex items-center justify-between mb-4">
-                    <h2 className="text-xl font-bold text-gray-900 dark:text-white">
+            <div className="p-4" style={{ padding: getSpacingValue('md') }}>
+                <div className="flex items-center justify-between mb-4" style={{ marginBottom: getSpacingValue('lg') }}>
+                    <h2 
+                        className="text-xl font-bold"
+                        style={{
+                            color: 'var(--text-primary)',
+                            fontSize: 'var(--text-xl)',
+                            fontWeight: 'var(--font-bold)'
+                        }}
+                    >
                         Events ({match.events.length})
                     </h2>
                     {isEditing && (
                         <button 
                             onClick={() => setShowAddEventModal(true)}
-                            className="p-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors"
+                            className="p-2 rounded-lg transition-all"
+                            style={{
+                                backgroundColor: 'var(--status-success)',
+                                color: 'var(--text-primary)',
+                                borderRadius: 'var(--radius-lg)',
+                                transition: 'var(--transition-normal)',
+                            }}
                             title="Add Event"
                         >
                             <Plus size={18} />
@@ -178,14 +302,35 @@ export const MatchDetailView = ({ matchId, onClose }) => {
                 </div>
                 
                 {match.events.length === 0 ? (
-                    <div className="text-center py-12 text-gray-500 dark:text-gray-400">
-                        <p>No events recorded</p>
+                    <div 
+                        className="text-center py-12"
+                        style={{ padding: `${getSpacingValue('3xl')} 0` }}
+                    >
+                        <p 
+                            style={{
+                                color: 'var(--text-disabled)',
+                            fontSize: 'var(--text-base)',
+                            marginBottom: getSpacingValue('sm'),
+                            textAlign: 'center',
+                            }}
+                        >
+                            No events recorded
+                        </p>
                         {isEditing && (
-                            <p className="text-sm mt-2">Tap the + button to add an event</p>
+                            <p 
+                                className="text-sm mt-2"
+                                style={{
+                                    fontSize: 'var(--text-sm)',
+                                    marginTop: getSpacingValue('sm'),
+                                    textAlign: 'center',
+                                }}
+                            >
+                                Tap the + button to add an event
+                            </p>
                         )}
                     </div>
                 ) : (
-                    <div className="space-y-2">
+                    <div className="space-y-2" style={{ gap: getSpacingValue('md') }}>
                         {match.events.map((event) => (
                             <EditableEventItem
                                 key={event.id}
@@ -200,28 +345,45 @@ export const MatchDetailView = ({ matchId, onClose }) => {
             </div>
 
             {/* Export Options */}
-            <div className="sticky bottom-0 bg-black border-t-2 border-[var(--trackside-hot-pink)] p-4" style={{ boxShadow: 'var(--shadow-hot-pink)' }}>
-                <div className="flex gap-2">
+            <div 
+                className="sticky bottom-0 p-4"
+                style={{
+                    ...createModalStyles(),
+                    position: 'sticky',
+                    bottom: 0,
+                    padding: getSpacingValue('md'),
+                }}
+            >
+                <div className="flex gap-2" style={{ gap: getSpacingValue('sm') }}>
                     <button 
                         onClick={handleExportCopy}
-                        className="flex-1 p-3 bg-black border-2 border-[var(--trackside-hot-pink)] text-white rounded-lg flex items-center justify-center gap-2 hover:bg-[var(--trackside-hot-pink)] transition-colors"
-                        style={{ boxShadow: 'var(--shadow-hot-pink)' }}
+                        className="flex-1 p-3 rounded-lg flex items-center justify-center gap-2 transition-all"
+                        style={{
+                            ...createButtonStyles('secondary'),
+                            padding: getSpacingValue('sm'),
+                        }}
                     >
                         <Share2 size={18} />
                         Copy Summary
                     </button>
                     <button 
                         onClick={handleExportCSV}
-                        className="flex-1 p-3 bg-black border-2 border-[var(--trackside-hot-pink)] text-white rounded-lg flex items-center justify-center gap-2 hover:bg-[var(--trackside-hot-pink)] transition-colors"
-                        style={{ boxShadow: 'var(--shadow-hot-pink)' }}
+                        className="flex-1 p-3 rounded-lg flex items-center justify-center gap-2 transition-all"
+                        style={{
+                            ...createButtonStyles('secondary'),
+                            padding: getSpacingValue('sm'),
+                        }}
                     >
                         <FileDown size={18} />
                         Download CSV
                     </button>
                     <button 
                         onClick={() => setShowSimplifiedExport(true)}
-                        className="flex-1 p-3 bg-gradient-to-r from-[var(--trackside-hot-pink)] to-[var(--trackside-electric-pink)] text-white rounded-lg flex items-center justify-center gap-2 hover:from-[var(--trackside-neon-pink)] hover:to-[var(--trackside-hot-pink)] transition-all transform hover:scale-105"
-                        style={{ boxShadow: 'var(--shadow-hot-pink)' }}
+                        className="flex-1 p-3 rounded-lg flex items-center justify-center gap-2 transition-all transform hover:scale-105"
+                        style={{
+                            ...createButtonStyles('primary'),
+                            padding: getSpacingValue('sm'),
+                        }}
                     >
                         <Share2 size={18} />
                         Share Options

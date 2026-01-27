@@ -1,4 +1,4 @@
-# 🆓 Free Deployment Guide for Sideline Stats
+# 🆓 Free Deployment Guide for Track Side
 
 Perfect! Your app is ready to share with the world without spending a dime. Here are the **best free hosting options** for your React PWA:
 
@@ -17,7 +17,7 @@ npm i -g vercel
 # Deploy (one command!)
 vercel --prod
 
-# That's it! Your app is live at: https://sideline-stats.vercel.app
+# That's it! Your app is live at: https://track-side.vercel.app
 ```
 
 ### 2. **Netlify** ⭐⭐⭐⭐⭐

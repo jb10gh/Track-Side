@@ -310,7 +310,7 @@ export const useSportStore = create(
             }
         }),
         {
-            name: 'sideline-stats-sport-storage',
+            name: 'track-side-sport-storage',
             version: 1
         }
     )

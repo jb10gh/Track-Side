@@ -257,7 +257,7 @@ export const useGameStoreClean = create<GameStore>()(
             },
         }),
         {
-            name: 'sideline-stats-clean-storage',
+            name: 'track-side-clean-storage',
         }
     )
 );

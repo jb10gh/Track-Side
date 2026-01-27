@@ -7,9 +7,10 @@ import { EmailService } from '../../services/emailService';
 import { autoEmailExportService } from '../../services/autoEmailExportService';
 import { copyEnhancedSummary, downloadEnhancedCSV } from '../../utils/export';
 import { SharePanel } from './SharePanel';
+import { useTheme, createButtonStyles, getSpacingValue } from '../../theme/useTheme';
 
 /**
- * Enhanced Export Modal - UI/UX Pro Max Design
+ * Enhanced Export Modal - Unified Theme System
  * 
  * Features:
  * - Primary email submission action
@@ -17,6 +18,7 @@ import { SharePanel } from './SharePanel';
  * - Attachment instructions
  * - Professional email composition
  * - Mobile-optimized interface
+ * - Unified Track Side theme integration
  */
 export const EnhancedExportModal = ({ matchData, onClose }) => {
     const [emailMode, setEmailMode] = useState(false);
@@ -27,6 +29,7 @@ export const EnhancedExportModal = ({ matchData, onClose }) => {
     
     const { formatTime, formatTimeForExport } = useGameStore();
     const { coaches, getDefaultCoach, addCoach } = useCoachStore();
+    const { createModalStyles } = useTheme();
 
     // Get default coach
     const defaultCoach = getDefaultCoach();
@@ -120,6 +123,8 @@ export const EnhancedExportModal = ({ matchData, onClose }) => {
         return <AttachmentInstructions onClose={onClose} attachment={submissionResult.attachment} />;
     }
 
+    const modalStyles = createModalStyles();
+
     return (
         <AnimatePresence>
             <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
@@ -128,8 +133,9 @@ export const EnhancedExportModal = ({ matchData, onClose }) => {
                     initial={{ opacity: 0 }}
                     animate={{ opacity: 1 }}
                     exit={{ opacity: 0 }}
-                    className="absolute inset-0 bg-black/60 backdrop-blur-sm"
+                    className="absolute inset-0 modal-overlay"
                     onClick={onClose}
+                    style={{ background: 'var(--modal-overlay)' }}
                 />
 
                 {/* Modal Content */}
@@ -137,28 +143,102 @@ export const EnhancedExportModal = ({ matchData, onClose }) => {
                     initial={{ scale: 0.9, opacity: 0 }}
                     animate={{ scale: 1, opacity: 1 }}
                     exit={{ scale: 0.9, opacity: 0 }}
-                    className="relative bg-white dark:bg-gray-800 rounded-2xl p-6 max-w-md w-full shadow-2xl max-h-[90vh] overflow-y-auto"
+                    className="relative rounded-2xl p-6 max-w-md w-full max-h-[90vh] overflow-y-auto"
+                    style={{
+                        ...modalStyles,
+                        padding: getSpacingValue('lg'),
+                        maxWidth: '28rem',
+                        maxHeight: '90vh',
+                    }}
                 >
                     {/* Header */}
-                    <div className="text-center mb-6">
-                        <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-2">
+                    <div 
+                        className="text-center mb-6"
+                        style={{ marginBottom: getSpacingValue('xl') }}
+                    >
+                        <h2 
+                            className="text-2xl font-bold mb-2"
+                            style={{
+                                color: 'var(--text-primary)',
+                                fontSize: 'var(--text-2xl)',
+                                fontWeight: 'var(--font-bold)',
+                                marginBottom: getSpacingValue('sm'),
+                            }}
+                        >
                             Submit Match Report
                         </h2>
-                        <p className="text-gray-600 dark:text-gray-400">
+                        <p 
+                            className="text-base"
+                            style={{
+                                color: 'var(--text-secondary)',
+                                fontSize: 'var(--text-base)',
+                            }}
+                        >
                             Send complete match statistics to your coach
                         </p>
                     </div>
 
                     {/* Match Preview */}
-                    <div className="bg-gray-50 dark:bg-gray-700 rounded-xl p-4 mb-6">
+                    <div 
+                        className="rounded-xl p-4 mb-6"
+                        style={{
+                            backgroundColor: 'var(--bg-surface)',
+                            borderRadius: 'var(--radius-xl)',
+                            padding: getSpacingValue('md'),
+                            marginBottom: getSpacingValue('xl'),
+                        }}
+                    >
                         <div className="text-center">
-                            <div className="text-3xl font-black mb-2">
-                                <span style={{ color: 'var(--score-our-color)' }}>{matchData.myScore}</span>
-                                <span className="mx-2 text-gray-400">-</span>
-                                <span style={{ color: 'var(--score-their-color)' }}>{matchData.opponentScore}</span>
+                            <div 
+                                className="text-3xl font-black mb-2"
+                                style={{
+                                    fontSize: 'var(--text-3xl)',
+                                    fontWeight: 'var(--font-black)',
+                                    marginBottom: getSpacingValue('sm'),
+                                }}
+                            >
+                                <span 
+                                    style={{ 
+                                        color: 'var(--team-our-primary)', 
+                                        textShadow: 'var(--team-our-shadow)' 
+                                    }}
+                                >
+                                    {matchData.myScore}
+                                </span>
+                                <span 
+                                    className="mx-2"
+                                    style={{ 
+                                        color: 'var(--text-secondary)',
+                                        margin: `0 ${getSpacingValue('sm')}`,
+                                    }}
+                                >
+                                    -
+                                </span>
+                                <span 
+                                    style={{ 
+                                        color: 'var(--team-their-primary)', 
+                                        textShadow: 'var(--team-their-shadow)' 
+                                    }}
+                                >
+                                    {matchData.opponentScore}
+                                </span>
                             </div>
-                            <p className="font-semibold text-gray-900 dark:text-white">vs {matchData.opponentName}</p>
-                            <p className="text-sm text-gray-500 dark:text-gray-400">
+                            <p 
+                                className="font-semibold"
+                                style={{
+                                    color: 'var(--text-primary)',
+                                    fontWeight: 'var(--font-semibold)',
+                                }}
+                            >
+                                vs {matchData.opponentName}
+                            </p>
+                            <p 
+                                className="text-sm"
+                                style={{
+                                    color: 'var(--text-muted)',
+                                    fontSize: 'var(--text-sm)',
+                                }}
+                            >
                                 {matchData.events.length} events • {formatTime(matchData.finalTime)}
                             </p>
                         </div>
@@ -166,8 +246,17 @@ export const EnhancedExportModal = ({ matchData, onClose }) => {
 
                     {/* Coach Selection */}
                     {coaches.length > 0 && (
-                        <div className="mb-6">
-                            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                        <div className="mb-6" style={{ marginBottom: getSpacingValue('xl') }}>
+                            <label 
+                                className="block text-sm font-medium mb-2"
+                                style={{
+                                    color: 'var(--text-primary)',
+                                    fontSize: 'var(--text-sm)',
+                                    fontWeight: 'var(--font-medium)',
+                                    marginBottom: getSpacingValue('sm'),
+                                    display: 'block',
+                                }}
+                            >
                                 Send to Coach:
                             </label>
                             <select
@@ -176,7 +265,15 @@ export const EnhancedExportModal = ({ matchData, onClose }) => {
                                     const coach = coaches.find(c => c.id === e.target.value);
                                     setSelectedCoach(coach);
                                 }}
-                                className="w-full border border-gray-300 dark:border-gray-600 rounded-lg px-3 py-2 bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
+                                className="w-full rounded-lg px-3 py-2"
+                                style={{
+                                    border: 'var(--border-primary)',
+                                    borderRadius: 'var(--radius-lg)',
+                                    padding: `${getSpacingValue('sm')} ${getSpacingValue('md')}`,
+                                    backgroundColor: 'var(--bg-surface)',
+                                    color: 'var(--text-primary)',
+                                    width: '100%',
+                                }}
                             >
                                 {coaches.map(coach => (
                                     <option key={coach.id} value={coach.id}>
@@ -188,12 +285,44 @@ export const EnhancedExportModal = ({ matchData, onClose }) => {
                     )}
 
                     {/* Primary Email Action */}
-                    <div className="bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 rounded-xl p-4 mb-4">
-                        <div className="flex items-center gap-3 mb-3">
-                            <Mail className="text-blue-600 dark:text-blue-400" size={24} />
+                    <div 
+                        className="rounded-xl p-4 mb-4"
+                        style={{
+                            backgroundColor: 'var(--bg-info)',
+                            border: 'var(--border-info)',
+                            borderRadius: 'var(--radius-xl)',
+                            padding: getSpacingValue('md'),
+                            marginBottom: getSpacingValue('lg'),
+                        }}
+                    >
+                        <div 
+                            className="flex items-center gap-3 mb-3"
+                            style={{ 
+                                gap: getSpacingValue('md'),
+                                marginBottom: getSpacingValue('md'),
+                            }}
+                        >
+                            <Mail 
+                                size={24} 
+                                style={{ color: 'var(--status-info)' }}
+                            />
                             <div>
-                                <h3 className="font-semibold text-blue-900 dark:text-blue-100">Email to Coach</h3>
-                                <p className="text-sm text-blue-700 dark:text-blue-300">
+                                <h3 
+                                    className="font-semibold"
+                                    style={{
+                                        color: 'var(--text-info)',
+                                        fontWeight: 'var(--font-semibold)',
+                                    }}
+                                >
+                                    Email to Coach
+                                </h3>
+                                <p 
+                                    className="text-sm"
+                                    style={{
+                                        color: 'var(--text-info-secondary)',
+                                        fontSize: 'var(--text-sm)',
+                                    }}
+                                >
                                     Send complete match report directly
                                 </p>
                             </div>
@@ -202,15 +331,32 @@ export const EnhancedExportModal = ({ matchData, onClose }) => {
                         <button
                             onClick={handleEmailSubmission}
                             disabled={isProcessing || !selectedCoach}
-                            className="w-full bg-blue-600 hover:bg-blue-700 disabled:bg-gray-400 text-white py-3 rounded-xl font-semibold transition-colors transform active:scale-95 disabled:cursor-not-allowed"
+                            className="w-full py-3 rounded-xl font-semibold transition-colors transform active:scale-95"
+                            style={{
+                                ...createButtonStyles('primary'),
+                                padding: getSpacingValue('md'),
+                                width: '100%',
+                                cursor: isProcessing || !selectedCoach ? 'not-allowed' : 'pointer',
+                                opacity: isProcessing || !selectedCoach ? 0.6 : 1,
+                            }}
                         >
                             {isProcessing ? (
-                                <span className="flex items-center justify-center gap-2">
-                                    <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin" />
+                                <span className="flex items-center justify-center gap-2" style={{ gap: getSpacingValue('sm') }}>
+                                    <div 
+                                        className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin"
+                                        style={{
+                                            width: '1rem',
+                                            height: '1rem',
+                                            border: '2px solid white',
+                                            borderTopColor: 'transparent',
+                                            borderRadius: '50%',
+                                            animation: 'spin 1s linear infinite',
+                                        }}
+                                    />
                                     Opening Email...
                                 </span>
                             ) : (
-                                <span className="flex items-center justify-center gap-2">
+                                <span className="flex items-center justify-center gap-2" style={{ gap: getSpacingValue('sm') }}>
                                     <Mail size={20} />
                                     Email Coach (Recommended)
                                 </span>
@@ -219,10 +365,19 @@ export const EnhancedExportModal = ({ matchData, onClose }) => {
                     </div>
 
                     {/* Alternative Options */}
-                    <div className="space-y-3">
+                    <div className="space-y-3" style={{ gap: getSpacingValue('md') }}>
                         <button
                             onClick={handleDownloadCSV}
-                            className="w-full flex items-center justify-center gap-3 px-4 py-3 bg-gray-100 hover:bg-gray-200 dark:bg-gray-700 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-300 rounded-xl font-medium transition-colors"
+                            className="w-full flex items-center justify-center gap-3 px-4 py-3 rounded-xl font-medium transition-all"
+                            style={{
+                                ...createButtonStyles('secondary'),
+                                padding: `${getSpacingValue('md')} ${getSpacingValue('lg')}`,
+                                gap: getSpacingValue('md'),
+                                display: 'flex',
+                                alignItems: 'center',
+                                justifyContent: 'center',
+                                width: '100%',
+                            }}
                         >
                             <FileDown size={20} />
                             Download CSV Only
@@ -230,7 +385,16 @@ export const EnhancedExportModal = ({ matchData, onClose }) => {
 
                         <button
                             onClick={handleCopySummary}
-                            className="w-full flex items-center justify-center gap-3 px-4 py-3 bg-gray-100 hover:bg-gray-200 dark:bg-gray-700 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-300 rounded-xl font-medium transition-colors"
+                            className="w-full flex items-center justify-center gap-3 px-4 py-3 rounded-xl font-medium transition-all"
+                            style={{
+                                ...createButtonStyles('secondary'),
+                                padding: `${getSpacingValue('md')} ${getSpacingValue('lg')}`,
+                                gap: getSpacingValue('md'),
+                                display: 'flex',
+                                alignItems: 'center',
+                                justifyContent: 'center',
+                                width: '100%',
+                            }}
                         >
                             <Copy size={20} />
                             Copy Summary
@@ -238,7 +402,16 @@ export const EnhancedExportModal = ({ matchData, onClose }) => {
 
                         <button
                             onClick={() => setShowSharePanel(true)}
-                            className="w-full flex items-center justify-center gap-3 px-4 py-3 bg-purple-100 hover:bg-purple-200 dark:bg-purple-700 dark:hover:bg-purple-600 text-purple-700 dark:text-purple-300 rounded-xl font-medium transition-colors"
+                            className="w-full flex items-center justify-center gap-3 px-4 py-3 rounded-xl font-medium transition-all"
+                            style={{
+                                ...createButtonStyles('secondary'),
+                                padding: `${getSpacingValue('md')} ${getSpacingValue('lg')}`,
+                                gap: getSpacingValue('md'),
+                                display: 'flex',
+                                alignItems: 'center',
+                                justifyContent: 'center',
+                                width: '100%',
+                            }}
                         >
                             <Share2 size={20} />
                             Share Options
@@ -247,11 +420,26 @@ export const EnhancedExportModal = ({ matchData, onClose }) => {
 
                     {/* Result Message */}
                     {submissionResult && (
-                        <div className={`mt-4 p-3 rounded-lg flex items-center gap-2 ${
-                            submissionResult.success 
-                                ? 'bg-green-50 dark:bg-green-900/20 text-green-800 dark:text-green-200 border border-green-200 dark:border-green-800'
-                                : 'bg-red-50 dark:bg-red-900/20 text-red-800 dark:text-red-200 border border-red-200 dark:border-red-800'
-                        }`}>
+                        <div 
+                            className="mt-4 p-3 rounded-lg flex items-center gap-2"
+                            style={{
+                                marginTop: getSpacingValue('md'),
+                                padding: getSpacingValue('sm'),
+                                borderRadius: 'var(--radius-lg)',
+                                gap: getSpacingValue('sm'),
+                                display: 'flex',
+                                alignItems: 'center',
+                                backgroundColor: submissionResult.success 
+                                    ? 'var(--bg-success)' 
+                                    : 'var(--bg-error)',
+                                border: submissionResult.success 
+                                    ? 'var(--border-success)' 
+                                    : 'var(--border-error)',
+                                color: submissionResult.success 
+                                    ? 'var(--text-success)' 
+                                    : 'var(--text-error)',
+                            }}
+                        >
                             {submissionResult.success ? (
                                 <Check size={20} />
                             ) : (
@@ -264,7 +452,13 @@ export const EnhancedExportModal = ({ matchData, onClose }) => {
                     {/* Close Button */}
                     <button
                         onClick={onClose}
-                        className="mt-4 w-full px-4 py-2 border border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors"
+                        className="mt-4 w-full px-4 py-2 rounded-lg transition-all"
+                        style={{
+                            ...createButtonStyles('secondary'),
+                            marginTop: getSpacingValue('md'),
+                            padding: `${getSpacingValue('sm')} ${getSpacingValue('lg')}`,
+                            width: '100%',
+                        }}
                     >
                         Close
                     </button>
@@ -283,9 +477,11 @@ export const EnhancedExportModal = ({ matchData, onClose }) => {
 };
 
 /**
- * Attachment Instructions Component
+ * Attachment Instructions Component - Unified Theme System
  */
 const AttachmentInstructions = ({ onClose, attachment }) => {
+    const { createModalStyles } = useTheme();
+    
     return (
         <AnimatePresence>
             <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
@@ -294,8 +490,9 @@ const AttachmentInstructions = ({ onClose, attachment }) => {
                     initial={{ opacity: 0 }}
                     animate={{ opacity: 1 }}
                     exit={{ opacity: 0 }}
-                    className="absolute inset-0 bg-black/60 backdrop-blur-sm"
+                    className="absolute inset-0 modal-overlay"
                     onClick={onClose}
+                    style={{ background: 'var(--modal-overlay)' }}
                 />
 
                 {/* Modal Content */}
@@ -303,12 +500,35 @@ const AttachmentInstructions = ({ onClose, attachment }) => {
                     initial={{ scale: 0.9, opacity: 0 }}
                     animate={{ scale: 1, opacity: 1 }}
                     exit={{ scale: 0.9, opacity: 0 }}
-                    className="relative bg-white dark:bg-gray-800 rounded-2xl p-6 max-w-md w-full shadow-2xl"
+                    className="relative rounded-2xl p-6 max-w-md w-full"
+                    style={{
+                        ...createModalStyles(),
+                        padding: getSpacingValue('lg'),
+                        maxWidth: '28rem',
+                    }}
                 >
                     {/* Success Header */}
-                    <div className="text-center mb-6">
-                        <div className="w-16 h-16 bg-green-100 dark:bg-green-900/30 rounded-full flex items-center justify-center mx-auto mb-4">
-                            <Mail className="text-green-600 dark:text-green-400" size={32} />
+                    <div 
+                        className="text-center mb-6"
+                        style={{ marginBottom: getSpacingValue('xl') }}
+                    >
+                        <div 
+                            className="w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4"
+                            style={{
+                                width: '4rem',
+                                height: '4rem',
+                                backgroundColor: 'var(--bg-success)',
+                                borderRadius: '50%',
+                                display: 'flex',
+                                alignItems: 'center',
+                                justifyContent: 'center',
+                                margin: `0 auto ${getSpacingValue('md')}`,
+                            }}
+                        >
+                            <Mail 
+                                size={32} 
+                                style={{ color: 'var(--status-success)' }}
+                            />
                         </div>
                         <h3 className="text-2xl font-bold text-gray-900 dark:text-white mb-2">
                             📧 Email Opened!

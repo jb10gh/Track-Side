@@ -1,0 +1,315 @@
+/**
+ * Track Side Unified Theme CSS
+ * 
+ * Optimized CSS custom properties for consistent branding
+ * Semantic token naming and organized structure
+ */
+
+/* Import fonts */
+@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600;700&display=swap');
+
+/* Base Tailwind imports */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ===== TRACK SIDE UNIFIED THEME ===== */
+
+:root {
+  /* ===== BRAND COLORS ===== */
+  --brand-primary: #FF1493;          /* Hot Pink */
+  --brand-primary-light: #FF69B4;    /* Neon Pink */
+  --brand-primary-dark: #C71585;     /* Deep Pink */
+  --brand-accent: #FF007F;           /* Electric Pink */
+
+  /* ===== SEMANTIC COLORS ===== */
+  
+  /* Background Colors */
+  --bg-primary: #000000;             /* Pure Black */
+  --bg-secondary: #0a0a0a;           /* Dark Black */
+  --bg-surface: #000000;             /* Surface Black */
+  --bg-overlay: rgba(0, 0, 0, 0.8); /* Black Overlay */
+
+  /* Text Colors */
+  --text-primary: #FFFFFF;           /* Pure White */
+  --text-secondary: #FF1493;         /* Brand Pink */
+  --text-muted: #E0E0E0;             /* Light Gray */
+  --text-disabled: #808080;          /* Gray */
+
+  /* Border Colors */
+  --border-primary: #FF1493;          /* Brand Pink */
+  --border-secondary: rgba(255, 20, 147, 0.3); /* Pink with opacity */
+  --border-subtle: rgba(255, 255, 255, 0.1); /* White with opacity */
+
+  /* Status Colors */
+  --status-success: #FF1493;         /* Pink for success */
+  --status-warning: #FF69B4;         /* Light Pink for warning */
+  --status-error: #FF007F;           /* Electric Pink for error */
+  --status-info: #C71585;            /* Deep Pink for info */
+
+  /* ===== TEAM COLORS ===== */
+  
+  /* Our Team */
+  --team-our-primary: #FF1493;       /* Hot Pink */
+  --team-our-light: #FF69B4;         /* Neon Pink */
+  --team-our-dark: #C71585;          /* Deep Pink */
+  --team-our-bg: rgba(255, 20, 147, 0.15); /* Pink background */
+  --team-our-border: #FF1493;        /* Pink border */
+  --team-our-text: #FFFFFF;          /* White text */
+  --team-our-shadow: 0 0 40px rgba(255, 20, 147, 0.9); /* Pink glow */
+
+  /* Their Team */
+  --team-their-primary: #FF007F;     /* Electric Pink */
+  --team-their-light: #FF69B4;       /* Neon Pink */
+  --team-their-dark: #C71585;        /* Deep Pink */
+  --team-their-bg: rgba(255, 0, 127, 0.15); /* Electric Pink background */
+  --team-their-border: #FF007F;      /* Electric Pink border */
+  --team-their-text: #FFFFFF;        /* White text */
+  --team-their-shadow: 0 0 40px rgba(255, 0, 127, 0.9); /* Electric Pink glow */
+
+  /* ===== TYPOGRAPHY ===== */
+  
+  /* Font Families */
+  --font-primary: 'Space Grotesk', sans-serif;
+  --font-mono: 'JetBrains Mono', monospace;
+
+  /* Font Sizes */
+  --text-xs: 0.75rem;      /* 12px */
+  --text-sm: 0.875rem;     /* 14px */
+  --text-base: 1rem;       /* 16px */
+  --text-lg: 1.125rem;     /* 18px */
+  --text-xl: 1.25rem;      /* 20px */
+  --text-2xl: 1.5rem;      /* 24px */
+  --text-3xl: 1.875rem;    /* 30px */
+  --text-4xl: 2.25rem;     /* 36px */
+  --text-5xl: 3rem;        /* 48px */
+  --text-6xl: 3.75rem;     /* 60px */
+
+  /* Font Weights */
+  --font-light: 300;
+  --font-normal: 400;
+  --font-medium: 500;
+  --font-semibold: 600;
+  --font-bold: 700;
+  --font-black: 900;
+
+  /* ===== EFFECTS ===== */
+  
+  /* Shadows */
+  --shadow-brand: 0 6px 30px rgba(255, 20, 147, 0.6);      /* Brand shadow */
+  --shadow-card: 0 4px 20px rgba(0, 0, 0, 0.4);         /* Card shadow */
+  --shadow-button: 0 4px 20px rgba(255, 20, 147, 0.4);    /* Button shadow */
+  --shadow-modal: 0 20px 40px rgba(0, 0, 0, 0.6);         /* Modal shadow */
+
+  /* Glows */
+  --glow-brand: 0 0 40px rgba(255, 20, 147, 0.9);         /* Brand glow */
+  --glow-accent: 0 0 50px rgba(255, 105, 180, 0.8);       /* Accent glow */
+  --glow-subtle: 0 0 20px rgba(255, 20, 147, 0.4);        /* Subtle glow */
+
+  /* Transitions */
+  --transition-fast: 150ms ease;
+  --transition-normal: 300ms ease;
+  --transition-slow: 500ms ease;
+
+  /* ===== SPACING ===== */
+  
+  --spacing-xs: 0.25rem;    /* 4px */
+  --spacing-sm: 0.5rem;     /* 8px */
+  --spacing-md: 1rem;       /* 16px */
+  --spacing-lg: 1.5rem;     /* 24px */
+  --spacing-xl: 2rem;       /* 32px */
+  --spacing-2xl: 3rem;      /* 48px */
+  --spacing-3xl: 4rem;      /* 64px */
+
+  /* ===== BORDER RADIUS ===== */
+  
+  --radius-sm: 0.5rem;      /* 8px */
+  --radius-md: 0.75rem;     /* 12px */
+  --radius-lg: 1rem;        /* 16px */
+  --radius-xl: 1.5rem;      /* 24px */
+  --radius-2xl: 2rem;       /* 32px */
+
+  /* ===== COMPONENT STYLES ===== */
+  
+  /* Buttons */
+  --btn-primary-bg: linear-gradient(135deg, var(--brand-primary), var(--brand-accent));
+  --btn-primary-hover: linear-gradient(135deg, var(--brand-primary-light), var(--brand-primary));
+  --btn-primary-active: linear-gradient(135deg, var(--brand-primary-dark), var(--brand-primary));
+  --btn-primary-text: var(--text-primary);
+  --btn-primary-shadow: var(--shadow-button);
+
+  --btn-secondary-bg: transparent;
+  --btn-secondary-hover: rgba(255, 20, 147, 0.1);
+  --btn-secondary-active: rgba(255, 20, 147, 0.2);
+  --btn-secondary-text: var(--brand-primary);
+  --btn-secondary-border: 2px solid var(--brand-primary);
+
+  --btn-ghost-bg: transparent;
+  --btn-ghost-hover: rgba(255, 255, 255, 0.1);
+  --btn-ghost-active: rgba(255, 255, 255, 0.2);
+  --btn-ghost-text: var(--text-primary);
+
+  /* Cards */
+  --card-bg: var(--bg-surface);
+  --card-border: 2px solid var(--border-primary);
+  --card-shadow: var(--shadow-card);
+  --card-padding: var(--spacing-lg);
+
+  /* Modals */
+  --modal-bg: var(--bg-surface);
+  --modal-border: 2px solid var(--border-primary);
+  --modal-shadow: var(--shadow-modal);
+  --modal-overlay: var(--bg-overlay);
+
+  /* Inputs */
+  --input-bg: var(--bg-surface);
+  --input-border: 2px solid var(--border-primary);
+  --input-text: var(--text-primary);
+  --input-placeholder: var(--text-muted);
+  --input-focus-border: var(--brand-primary);
+  --input-focus-shadow: var(--glow-brand);
+}
+
+/* ===== UTILITY CLASSES ===== */
+
+/* Background utilities */
+.bg-primary { background-color: var(--bg-primary); }
+.bg-secondary { background-color: var(--bg-secondary); }
+.bg-surface { background-color: var(--bg-surface); }
+.bg-overlay { background-color: var(--bg-overlay); }
+
+/* Text utilities */
+.text-primary { color: var(--text-primary); }
+.text-secondary { color: var(--text-secondary); }
+.text-muted { color: var(--text-muted); }
+.text-disabled { color: var(--text-disabled); }
+
+/* Border utilities */
+.border-primary { border-color: var(--border-primary); }
+.border-secondary { border-color: var(--border-secondary); }
+.border-subtle { border-color: var(--border-subtle); }
+
+/* Shadow utilities */
+.shadow-brand { box-shadow: var(--shadow-brand); }
+.shadow-card { box-shadow: var(--shadow-card); }
+.shadow-button { box-shadow: var(--shadow-button); }
+.shadow-modal { box-shadow: var(--shadow-modal); }
+
+/* Glow utilities */
+.glow-brand { box-shadow: var(--glow-brand); }
+.glow-accent { box-shadow: var(--glow-accent); }
+.glow-subtle { box-shadow: var(--glow-subtle); }
+
+/* Team color utilities */
+.team-our-primary { color: var(--team-our-primary); }
+.team-our-bg { background-color: var(--team-our-bg); }
+.team-our-border { border-color: var(--team-our-border); }
+.team-our-shadow { box-shadow: var(--team-our-shadow); }
+
+.team-their-primary { color: var(--team-their-primary); }
+.team-their-bg { background-color: var(--team-their-bg); }
+.team-their-border { border-color: var(--team-their-border); }
+.team-their-shadow { box-shadow: var(--team-their-shadow); }
+
+/* Button utilities */
+.btn-primary {
+  background: var(--btn-primary-bg);
+  color: var(--btn-primary-text);
+  border: none;
+  box-shadow: var(--btn-primary-shadow);
+  transition: var(--transition-normal);
+}
+
+.btn-primary:hover {
+  background: var(--btn-primary-hover);
+  transform: scale(1.05);
+}
+
+.btn-primary:active {
+  background: var(--btn-primary-active);
+  transform: scale(0.95);
+}
+
+.btn-secondary {
+  background: var(--btn-secondary-bg);
+  color: var(--btn-secondary-text);
+  border: var(--btn-secondary-border);
+  transition: var(--transition-normal);
+}
+
+.btn-secondary:hover {
+  background: var(--btn-secondary-hover);
+}
+
+.btn-secondary:active {
+  background: var(--btn-secondary-active);
+}
+
+.btn-ghost {
+  background: var(--btn-ghost-bg);
+  color: var(--btn-ghost-text);
+  border: none;
+  transition: var(--transition-normal);
+}
+
+.btn-ghost:hover {
+  background: var(--btn-ghost-hover);
+}
+
+.btn-ghost:active {
+  background: var(--btn-ghost-active);
+}
+
+/* Card utilities */
+.card {
+  background: var(--card-bg);
+  border: var(--card-border);
+  box-shadow: var(--card-shadow);
+  padding: var(--card-padding);
+  border-radius: var(--radius-lg);
+}
+
+/* Modal utilities */
+.modal {
+  background: var(--modal-bg);
+  border: var(--modal-border);
+  box-shadow: var(--modal-shadow);
+  border-radius: var(--radius-xl);
+}
+
+.modal-overlay {
+  background: var(--modal-overlay);
+}
+
+/* Typography utilities */
+.font-primary { font-family: var(--font-primary); }
+.font-mono { font-family: var(--font-mono); }
+
+/* Spacing utilities */
+.p-xs { padding: var(--spacing-xs); }
+.p-sm { padding: var(--spacing-sm); }
+.p-md { padding: var(--spacing-md); }
+.p-lg { padding: var(--spacing-lg); }
+.p-xl { padding: var(--spacing-xl); }
+.p-2xl { padding: var(--spacing-2xl); }
+.p-3xl { padding: var(--spacing-3xl); }
+
+.m-xs { margin: var(--spacing-xs); }
+.m-sm { margin: var(--spacing-sm); }
+.m-md { margin: var(--spacing-md); }
+.m-lg { margin: var(--spacing-lg); }
+.m-xl { margin: var(--spacing-xl); }
+.m-2xl { margin: var(--spacing-2xl); }
+.m-3xl { margin: var(--spacing-3xl); }
+
+/* Border radius utilities */
+.rounded-sm { border-radius: var(--radius-sm); }
+.rounded-md { border-radius: var(--radius-md); }
+.rounded-lg { border-radius: var(--radius-lg); }
+.rounded-xl { border-radius: var(--radius-xl); }
+.rounded-2xl { border-radius: var(--radius-2xl); }
+
+/* Transition utilities */
+.transition-fast { transition: var(--transition-fast); }
+.transition-normal { transition: var(--transition-normal); }
+.transition-slow { transition: var(--transition-slow); }

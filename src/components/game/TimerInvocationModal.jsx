@@ -2,9 +2,10 @@ import React from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Clock, Play, X, AlertTriangle } from 'lucide-react';
 import { useGameStore } from '../../store/gameStore';
+import { useTheme, useThemeLayout, useThemeComponents } from '../../theme/useTheme';
 
 /**
- * Timer Invocation Modal - UI/UX Pro Max Design
+ * Timer Invocation Modal - Unified Theme System
  * 
  * Features:
  * - Glassmorphism design with backdrop blur
@@ -13,6 +14,7 @@ import { useGameStore } from '../../store/gameStore';
  * - Mobile-optimized touch targets (44px minimum)
  * - Accessibility with proper ARIA labels
  * - Contextual messaging based on trigger
+ * - Unified Track Side theme integration
  */
 export const TimerInvocationModal = ({ 
     isOpen, 
@@ -22,6 +24,9 @@ export const TimerInvocationModal = ({
     onDismiss 
 }) => {
     const { timerInvocation } = useGameStore();
+    const { createModalStyles } = useTheme();
+    const { getSpacingValue } = useThemeLayout();
+    const { createButtonStyles } = useThemeComponents();
 
     // Enhanced contextual messaging with Track Side branding
     const getTriggerMessage = () => {
@@ -61,6 +66,8 @@ export const TimerInvocationModal = ({
 
     if (!isOpen) return null;
 
+    const modalStyles = createModalStyles();
+
     return (
         <AnimatePresence>
             <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
@@ -69,8 +76,9 @@ export const TimerInvocationModal = ({
                     initial={{ opacity: 0 }}
                     animate={{ opacity: 1 }}
                     exit={{ opacity: 0 }}
-                    className="absolute inset-0 bg-black/60 backdrop-blur-sm"
+                    className="absolute inset-0 modal-overlay"
                     onClick={onDismiss}
+                    style={{ background: 'var(--modal-overlay)' }}
                 />
 
                 {/* Modal Content */}
@@ -78,10 +86,18 @@ export const TimerInvocationModal = ({
                     initial={{ scale: 0.9, opacity: 0 }}
                     animate={{ scale: 1, opacity: 1 }}
                     exit={{ scale: 0.9, opacity: 0 }}
-                    className="relative bg-white/90 dark:bg-gray-800/90 backdrop-blur-xl rounded-2xl p-6 max-w-md w-full shadow-2xl border border-white/20"
+                    className="relative rounded-2xl p-6 max-w-md w-full"
+                    style={{
+                        ...modalStyles,
+                        padding: getSpacingValue('lg'),
+                        maxWidth: '28rem',
+                    }}
                 >
                     {/* Icon and Header */}
-                    <div className="text-center mb-6">
+                    <div 
+                        className="text-center mb-6"
+                        style={{ marginBottom: getSpacingValue('xl') }}
+                    >
                         <motion.div
                             animate={{
                                 scale: message.urgency === 'high' ? [1, 1.1, 1] : 1,
@@ -92,39 +108,73 @@ export const TimerInvocationModal = ({
                                 repeatType: 'reverse'
                             }}
                             className="mx-auto mb-4"
+                            style={{ marginBottom: getSpacingValue('md') }}
                         >
                             {message.urgency === 'high' ? (
-                                <AlertTriangle size={48} className="text-red-600" />
+                                <AlertTriangle 
+                                    size={48} 
+                                    style={{ color: 'var(--status-error)' }}
+                                />
                             ) : (
-                                <Clock size={48} className="text-blue-600" />
+                                <Clock 
+                                    size={48} 
+                                    style={{ color: 'var(--status-info)' }}
+                                />
                             )}
                         </motion.div>
                         
-                        <h3 className="text-2xl font-bold text-gray-900 dark:text-white mb-2">
+                        <h3 
+                            className="text-2xl font-bold mb-2"
+                            style={{
+                                color: 'var(--text-primary)',
+                                fontSize: 'var(--text-2xl)',
+                                fontWeight: 'var(--font-bold)',
+                                marginBottom: getSpacingValue('sm'),
+                            }}
+                        >
                             {message.icon} {message.title}
                         </h3>
                         
-                        <p className="text-gray-600 dark:text-gray-400">
+                        <p 
+                            className="text-base"
+                            style={{
+                                color: 'var(--text-secondary)',
+                                fontSize: 'var(--text-base)',
+                            }}
+                        >
                             {message.message}
                         </p>
                     </div>
 
                     {/* Action Buttons */}
-                    <div className="space-y-3">
+                    <div className="space-y-3" style={{ gap: getSpacingValue('md') }}>
                         <button
                             onClick={onStart}
-                            className="w-full flex items-center justify-center gap-3 px-6 py-3 bg-gradient-to-r from-[#FF1493] to-[#FF007F] hover:from-[#FF69B4] hover:to-[#FF1493] text-white rounded-xl font-semibold transition-all transform hover:scale-105 active:scale-95 shadow-lg"
-                            style={{ boxShadow: '0 4px 20px rgba(255, 20, 147, 0.4)' }}
+                            className="w-full flex items-center justify-center gap-3 rounded-xl font-semibold transition-all transform hover:scale-105 active:scale-95"
+                            style={{
+                                ...createButtonStyles('primary'),
+                                padding: `${getSpacingValue('md')} ${getSpacingValue('lg')}`,
+                                gap: getSpacingValue('md'),
+                                display: 'flex',
+                                alignItems: 'center',
+                                justifyContent: 'center',
+                                width: '100%',
+                            }}
                             aria-label="Start timer now"
                         >
                             <Play size={20} />
                             ⏰ Start Timer Now
                         </button>
 
-                        <div className="flex gap-3">
+                        <div className="flex gap-3" style={{ gap: getSpacingValue('md') }}>
                             <button
                                 onClick={onSkip}
-                                className="flex-1 px-4 py-2 bg-gray-200 hover:bg-gray-300 dark:bg-gray-700 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-300 rounded-lg font-medium transition-colors"
+                                className="flex-1 rounded-lg font-medium transition-all"
+                                style={{
+                                    ...createButtonStyles('secondary'),
+                                    padding: `${getSpacingValue('sm')} ${getSpacingValue('md')}`,
+                                    flex: 1,
+                                }}
                                 aria-label="Skip timer start"
                             >
                                 Skip
@@ -132,18 +182,48 @@ export const TimerInvocationModal = ({
 
                             <button
                                 onClick={onDismiss}
-                                className="p-2 text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200 rounded-lg transition-colors"
+                                className="p-2 rounded-lg transition-all"
+                                style={{
+                                    backgroundColor: 'transparent',
+                                    borderRadius: 'var(--radius-lg)',
+                                    transition: 'var(--transition-normal)',
+                                    padding: getSpacingValue('sm'),
+                                }}
+                                onMouseEnter={(e) => {
+                                    e.target.style.backgroundColor = 'var(--bg-secondary)';
+                                }}
+                                onMouseLeave={(e) => {
+                                    e.target.style.backgroundColor = 'transparent';
+                                }}
                                 aria-label="Close modal"
                             >
-                                <X size={20} />
+                                <X 
+                                    size={20} 
+                                    style={{ color: 'var(--text-secondary)' }}
+                                />
                             </button>
                         </div>
                     </div>
 
                     {/* Additional Info */}
                     {timerInvocation.invocationCount > 2 && (
-                        <div className="mt-4 p-3 bg-yellow-50 dark:bg-yellow-900/20 rounded-lg border border-yellow-200 dark:border-yellow-800">
-                            <p className="text-sm text-yellow-800 dark:text-yellow-200">
+                        <div 
+                            className="mt-4 p-3 rounded-lg"
+                            style={{
+                                marginTop: getSpacingValue('md'),
+                                padding: getSpacingValue('sm'),
+                                backgroundColor: 'var(--bg-warning)',
+                                border: 'var(--border-warning)',
+                                borderRadius: 'var(--radius-lg)',
+                            }}
+                        >
+                            <p 
+                                className="text-sm"
+                                style={{
+                                    color: 'var(--text-warning)',
+                                    fontSize: 'var(--text-sm)',
+                                }}
+                            >
                                 💡 Pro tip: Starting the timer at the beginning ensures accurate game statistics
                             </p>
                         </div>

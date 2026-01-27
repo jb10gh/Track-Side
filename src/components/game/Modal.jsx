@@ -1,9 +1,10 @@
 import React from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { X } from 'lucide-react';
+import { useTheme, getSpacingValue } from '../../theme/useTheme';
 
 /**
- * Modal Component - UI/UX Pro Max Design
+ * Modal Component - Unified Theme System
  * 
  * Features:
  * - Smooth animations with Framer Motion
@@ -11,6 +12,7 @@ import { X } from 'lucide-react';
  * - Accessibility support
  * - Backdrop blur effect
  * - Responsive sizing
+ * - Unified Track Side theme integration
  */
 export const Modal = ({ 
   isOpen, 
@@ -21,15 +23,19 @@ export const Modal = ({
   showCloseButton = true,
   className = ''
 }) => {
+  const { createModalStyles } = useTheme();
+  
   if (!isOpen) return null;
 
   const sizeClasses = {
-    sm: 'max-w-sm',
-    md: 'max-w-md',
-    lg: 'max-w-lg',
-    xl: 'max-w-xl',
-    full: 'max-w-full'
+    sm: { maxWidth: '20rem' },
+    md: { maxWidth: '28rem' },
+    lg: { maxWidth: '32rem' },
+    xl: { maxWidth: '36rem' },
+    full: { maxWidth: '100%' }
   };
+
+  const modalStyles = createModalStyles();
 
   return (
     <AnimatePresence>
@@ -39,8 +45,9 @@ export const Modal = ({
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
-          className="absolute inset-0 bg-black/60 backdrop-blur-sm"
+          className="absolute inset-0 modal-overlay"
           onClick={onClose}
+          style={{ background: 'var(--modal-overlay)' }}
         />
 
         {/* Modal Content */}
@@ -48,37 +55,62 @@ export const Modal = ({
           initial={{ scale: 0.9, opacity: 0 }}
           animate={{ scale: 1, opacity: 1 }}
           exit={{ scale: 0.9, opacity: 0 }}
-          className={`
-            relative bg-white dark:bg-gray-800 rounded-2xl shadow-2xl 
-            ${sizeClasses[size]} 
-            w-full 
-            max-h-[90vh] 
-            overflow-y-auto
-            ${className}
-          `}
+          className="relative w-full max-h-[90vh] overflow-y-auto"
+          style={{
+            ...modalStyles,
+            ...sizeClasses[size],
+            maxHeight: '90vh',
+          }}
         >
           {/* Header */}
           {(title || showCloseButton) && (
-            <div className="flex items-center justify-between p-6 border-b border-gray-200 dark:border-gray-700">
+            <div 
+              className="flex items-center justify-between"
+              style={{
+                padding: getSpacingValue('lg'),
+                borderBottom: 'var(--border-subtle)',
+              }}
+            >
               {title && (
-                <h2 className="text-xl font-bold text-gray-900 dark:text-white">
+                <h2 
+                  className="text-xl font-bold"
+                  style={{
+                    color: 'var(--text-primary)',
+                    fontSize: 'var(--text-xl)',
+                    fontWeight: 'var(--font-bold)',
+                  }}
+                >
                   {title}
                 </h2>
               )}
               {showCloseButton && (
                 <button
                   onClick={onClose}
-                  className="p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors"
+                  className="p-2 rounded-lg transition-all"
+                  style={{
+                    backgroundColor: 'transparent',
+                    borderRadius: 'var(--radius-lg)',
+                    transition: 'var(--transition-normal)',
+                  }}
+                  onMouseEnter={(e) => {
+                    e.target.style.backgroundColor = 'var(--bg-secondary)';
+                  }}
+                  onMouseLeave={(e) => {
+                    e.target.style.backgroundColor = 'transparent';
+                  }}
                   aria-label="Close modal"
                 >
-                  <X size={20} className="text-gray-500 dark:text-gray-400" />
+                  <X 
+                    size={20} 
+                    style={{ color: 'var(--text-secondary)' }}
+                  />
                 </button>
               )}
             </div>
           )}
 
           {/* Content */}
-          <div className="p-6">
+          <div style={{ padding: getSpacingValue('lg') }}>
             {children}
           </div>
         </motion.div>
@@ -97,16 +129,49 @@ export const SimpleModal = ({
   size = 'md',
   className = ''
 }) => {
+  const { createModalStyles } = useTheme();
+  
+  if (!isOpen) return null;
+
+  const sizeClasses = {
+    sm: { maxWidth: '20rem' },
+    md: { maxWidth: '28rem' },
+    lg: { maxWidth: '32rem' },
+    xl: { maxWidth: '36rem' },
+    full: { maxWidth: '100%' }
+  };
+
+  const modalStyles = createModalStyles();
+
   return (
-    <Modal
-      isOpen={isOpen}
-      onClose={onClose}
-      size={size}
-      showCloseButton={false}
-      className={className}
-    >
-      {children}
-    </Modal>
+    <AnimatePresence>
+      <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
+        {/* Backdrop */}
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
+          className="absolute inset-0 modal-overlay"
+          onClick={onClose}
+          style={{ background: 'var(--modal-overlay)' }}
+        />
+
+        {/* Modal Content */}
+        <motion.div
+          initial={{ scale: 0.9, opacity: 0 }}
+          animate={{ scale: 1, opacity: 1 }}
+          exit={{ scale: 0.9, opacity: 0 }}
+          className="relative w-full max-h-[90vh] overflow-y-auto"
+          style={{
+            ...modalStyles,
+            ...sizeClasses[size],
+            maxHeight: '90vh',
+          }}
+        >
+          {children}
+        </motion.div>
+      </div>
+    </AnimatePresence>
   );
 };
 

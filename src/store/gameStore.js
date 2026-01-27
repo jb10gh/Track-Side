@@ -381,7 +381,7 @@ export const useGameStore = create(
             },
         }),
         {
-            name: 'sideline-stats-utility-storage',
+            name: 'track-side-utility-storage',
         }
     )
 );

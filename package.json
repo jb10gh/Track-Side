@@ -1,7 +1,11 @@
 {
-    "name": "trackside",
+    "name": "Track Side",
     "private": true,
-    "version": "0.0.0",
+    "version": "1.0.0",
+    "description": "Professional sports tracking application with unified theme system",
+    "keywords": ["sports", "tracking", "theme", "react", "vite", "pwa"],
+    "author": "Track Side Team",
+    "license": "MIT",
     "type": "module",
     "scripts": {
         "dev": "vite",

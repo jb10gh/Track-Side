@@ -40,25 +40,52 @@ export default defineConfig({
           ui: ['framer-motion', 'lucide-react'],
           state: ['zustand'],
           gestures: ['@use-gesture/react'],
-          router: ['react-router-dom']
+          router: ['react-router-dom'],
+          'theme-core': ['src/theme/theme-config.ts'],
+          'theme-hooks': ['src/theme/useTheme.ts'],
+          'theme-utils': ['src/theme/theme-utils.ts']
         },
         chunkFileNames: 'assets/[name]-[hash].js',
         entryFileNames: 'assets/[name]-[hash].js',
-        assetFileNames: 'assets/[name]-[hash].[ext]'
+        assetFileNames: (assetInfo) => {
+          if (assetInfo.name?.endsWith('.css')) {
+            return 'assets/css/[name]-[hash].css';
+          }
+          return 'assets/[name]-[hash].[ext]';
+        }
       }
     },
-    sourcemap: true,
-    chunkSizeWarningLimit: 800,
+    sourcemap: false,
+    chunkSizeWarningLimit: 1000,
     minify: 'terser',
     terserOptions: {
       compress: {
         drop_console: true,
-        drop_debugger: true
+        drop_debugger: true,
+        pure_funcs: ['console.log', 'console.info', 'console.debug'],
+        passes: 2
+      },
+      mangle: {
+        safari10: true
       }
-    }
+    },
+    cssCodeSplit: true,
+    assetsInlineLimit: 4096
   },
   optimizeDeps: {
     include: ['react', 'react-dom', 'framer-motion'],
     exclude: ['@use-gesture/react']
+  },
+  define: {
+    __DEV__: JSON.stringify(false),
+    __PROD__: JSON.stringify(true),
+    __VERSION__: JSON.stringify(process.env.npm_package_version || '1.0.0')
+  },
+  server: {
+    hmr: false
+  },
+  preview: {
+    port: 4173,
+    strictPort: true
   }
 });

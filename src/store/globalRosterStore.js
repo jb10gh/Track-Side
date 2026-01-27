@@ -112,7 +112,7 @@ export const useGlobalRosterStore = create(
             }
         }),
         {
-            name: 'sideline-stats-global-roster',
+            name: 'track-side-global-roster',
             version: 1
         }
     )

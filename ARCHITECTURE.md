@@ -1,9 +1,9 @@
-# Sideline Stats - Architecture Documentation
+# Track Side - Architecture Documentation
 
 ## 🏗️ System Architecture
 
 ### Overview
-Sideline Stats is a modern, gesture-first sports statistics tracking application built with React, TypeScript, and performance-optimized architecture patterns.
+Track Side is a modern, gesture-first sports statistics tracking application built with React, TypeScript, and performance-optimized architecture patterns.
 
 ### Core Principles
 - **Mobile-First**: Designed for one-handed sideline use
@@ -16,7 +16,7 @@ Sideline Stats is a modern, gesture-first sports statistics tracking application
 ## 📁 Project Structure
 
 ```
-sideline-stats/
+track-side/
 ├── .agent/skills/              # Agent skills repository
 ├── public/                      # Static assets
 │   ├── sw.js                   # Service worker
