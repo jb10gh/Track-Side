@@ -1,12 +1,11 @@
 import React from 'react';
 import { Target, AlertTriangle, Pencil, Trash2 } from 'lucide-react';
 import { EVENT_TYPES, TEAMS } from '../../store/gameStore';
+import '../../styles/design-tokens.css';
 
-/**
- * Clean Code: EventItem component.
- * Represents a single event entry in the timeline.
- */
 export const EventItem = ({ event, onEdit, onDelete, formatTime }) => {
+    const homeTeamName = 'HOME';
+    const awayTeamName = 'AWAY';
     const isUs = event.team === TEAMS.US;
     const isGoal = event.type === EVENT_TYPES.GOAL;
 
@@ -20,44 +19,55 @@ export const EventItem = ({ event, onEdit, onDelete, formatTime }) => {
     return (
         <div
             onClick={onEdit}
-            className={`flex items-center gap-4 p-5 rounded-[1.5rem] animate-slide-up hover:border-[var(--color-brand)] transition-all cursor-pointer group team-color-transition ${
-                isUs ? 'event-our border-[var(--team-our-border)]' : 'event-their border-[var(--team-their-border)]'
+            className={`flex items-center gap-4 p-4 rounded-xl bg-slate-900/50 backdrop-blur-sm hover:bg-slate-900/70 border-l-4 transition-all cursor-pointer group ${
+                isUs ? 'border-pink-500/70' : 'border-blue-400/70'
             }`}
+            style={{ boxShadow: 'var(--glass-shadow-sm)' }}
         >
-            <span className="text-sm font-black tabular-nums text-[var(--text-secondary)] w-12 font-mono">
+            <span className="text-sm font-bold tabular-nums text-slate-400 w-12 font-mono">
                 {formatTime(event.gameTime)}
             </span>
 
             <div className="flex-1 flex items-center justify-between">
                 <div className="flex flex-col">
                     <div className="flex items-center gap-2">
-                        <span className={`text-[10px] font-black uppercase tracking-widest ${isUs ? 'text-[var(--team-our-text)]' : 'text-[var(--team-their-text)]'}`}>
-                            {isUs ? 'Us' : 'Them'}
+                        <span className={`text-xs font-bold uppercase tracking-wider px-2 py-1 rounded ${
+                            isUs ? 'bg-pink-500/20 text-pink-400' : 'bg-blue-400/20 text-blue-400'
+                        }`}>
+                            {isUs ? homeTeamName : awayTeamName}
                         </span>
                         {event.meta?.isPK && (
-                            <span className={`text-[8px] font-black px-1.5 rounded uppercase tracking-tighter ${
-                                isUs ? 'bg-[var(--team-our-primary)] text-white' : 'bg-[var(--team-their-primary)] text-white'
+                            <span className={`text-xs font-bold px-1.5 py-0.5 rounded ${
+                                isUs ? 'bg-pink-500/20 text-pink-400' : 'bg-blue-400/20 text-blue-400'
                             }`}>
                                 PK
                             </span>
                         )}
                     </div>
                     <div className="flex items-center gap-2">
-                        <span className="font-black text-xl italic tracking-tight uppercase leading-tight">
+                        <span className="text-lg font-bold text-white">
                             {event.label || (isGoal ? 'Unnamed Goal' : 'Unnamed Penalty')}
                         </span>
                         <div className="flex items-center gap-1 opacity-0 group-hover:opacity-60 transition-opacity">
-                            <Pencil size={12} className="hover:text-[var(--color-brand)] transition-colors" />
+                            <Pencil size={12} className="hover:text-pink-400 transition-colors" />
                             <Trash2 
                                 size={12} 
-                                className="hover:text-[var(--color-danger)] transition-colors cursor-pointer" 
+                                className="hover:text-red-400 transition-colors cursor-pointer" 
                                 onClick={handleDelete}
                             />
                         </div>
                     </div>
+                    {!isUs && event.label && (
+                        <div className="text-xs text-blue-400 font-medium mt-1">
+                            {event.label}
+                        </div>
+                    )}
                 </div>
-                <div className={isUs ? 'text-[var(--team-our-primary)]' : 'text-[var(--team-their-primary)]'}>
-                    {isGoal ? <Target size={24} /> : <AlertTriangle size={24} />}
+                <div className="flex items-center justify-between">
+                    <div className={isUs ? 'text-pink-500' : 'text-blue-400'}>
+                        {isGoal ? <Target size={20} /> : <AlertTriangle size={20} />}
+                    </div>
+                    {/* Removed HOME team label from right side */}
                 </div>
             </div>
         </div>

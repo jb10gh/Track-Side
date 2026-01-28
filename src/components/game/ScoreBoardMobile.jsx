@@ -1,19 +1,20 @@
 import React from 'react';
-import { Play, Pause, Clock } from 'lucide-react';
+import { Play, Pause } from 'lucide-react';
+import '../../styles/design-tokens.css';
 
 export const ScoreBoard = ({ myScore, opponentScore, displayTime, isRunning, onToggleTimer }) => {
     return (
         <div className="max-w-4xl mx-auto px-4 py-8">
-            {/* Score Display - Mobile Responsive */}
-            <div className="bg-slate-800/50 backdrop-blur-sm rounded-2xl border border-slate-700/50 shadow-2xl p-4 sm:p-8">
+            {/* Score Display - Glassmorphism Surface Card */}
+            <div className="bg-slate-900/50 backdrop-blur-sm rounded-2xl border border-slate-700/50 p-4 sm:p-8" style={{ boxShadow: 'var(--glass-shadow)' }}>
                 {/* Mobile Layout (Stacked) */}
                 <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between space-y-6 sm:space-y-0">
                     {/* Our Team */}
                     <div className="text-center sm:text-left sm:flex-1">
                         <div className="mb-2">
-                            <span className="text-xs font-semibold text-pink-400 uppercase tracking-wider">Our Team</span>
+                            <span className="text-xs font-bold uppercase tracking-wider text-pink-400 bg-pink-500/20 px-2 py-1 rounded">Our Team</span>
                         </div>
-                        <div className="text-5xl sm:text-7xl font-black bg-gradient-to-br from-pink-500 to-rose-600 bg-clip-text text-transparent">
+                        <div className="text-5xl sm:text-7xl font-bold text-white" style={{ textShadow: '0 0 20px rgba(255, 20, 147, 0.6)' }}>
                             {myScore}
                         </div>
                     </div>
@@ -35,7 +36,6 @@ export const ScoreBoard = ({ myScore, opponentScore, displayTime, isRunning, onT
                             )}
                         </button>
                         <div className="mt-3 sm:mt-4 flex items-center space-x-2 text-slate-300">
-                            <Clock size={14} className="sm:size-16" />
                             <span className="font-mono text-base sm:text-lg font-medium">{displayTime}</span>
                         </div>
                         <div className="mt-1 text-xs text-slate-500">
@@ -46,9 +46,9 @@ export const ScoreBoard = ({ myScore, opponentScore, displayTime, isRunning, onT
                     {/* Opponent Team */}
                     <div className="text-center sm:text-right sm:flex-1">
                         <div className="mb-2">
-                            <span className="text-xs font-semibold text-blue-400 uppercase tracking-wider">Opponent</span>
+                            <span className="text-xs font-bold uppercase tracking-wider text-blue-400 bg-blue-400/20 px-2 py-1 rounded">Opponent</span>
                         </div>
-                        <div className="text-5xl sm:text-7xl font-black bg-gradient-to-br from-blue-500 to-cyan-600 bg-clip-text text-transparent">
+                        <div className="text-5xl sm:text-7xl font-bold text-white" style={{ textShadow: '0 0 20px rgba(0, 206, 209, 0.6)' }}>
                             {opponentScore}
                         </div>
                     </div>

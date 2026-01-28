@@ -8,6 +8,9 @@
 /* Import unified theme system */
 @import './theme/theme.css';
 
+/* Import Glassmorphism design tokens */
+@import './styles/design-tokens.css';
+
 /* Legacy team colors for backward compatibility */
 @import './styles/team-colors.css';
 

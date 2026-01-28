@@ -1,5 +1,6 @@
 import React from 'react';
 import { Users } from 'lucide-react';
+import '../../styles/design-tokens.css';
 
 /**
  * Clean Code: SquadRoster component.
@@ -10,23 +11,28 @@ export const SquadRoster = ({ roster, onClear }) => {
 
     return (
         <section className="space-y-6">
-            <div className="flex items-center justify-between border-b border-[var(--color-border)] pb-4">
-                <h2 className="text-2xl font-black italic tracking-tighter uppercase flex items-center gap-3">
-                    <Users size={24} className="text-[var(--color-brand)]" />
+            {/* Header */}
+            <div className="flex items-center justify-between pb-4">
+                <h2 className="text-2xl font-bold tracking-tighter uppercase flex items-center gap-3 text-white">
+                    <Users size={24} className="text-pink-500" />
                     Squad Roster
                 </h2>
                 <button
                     onClick={() => window.confirm('Clear all saved names?') && onClear()}
-                    className="text-[10px] font-bold uppercase tracking-widest text-[var(--text-secondary)] hover:text-[var(--color-danger)] transition-colors"
+                    className="text-xs font-bold uppercase tracking-wider text-slate-400 hover:text-pink-400 transition-colors px-3 py-2 rounded-lg bg-slate-900/50 hover:bg-slate-800/50 border border-slate-700/50 hover:border-pink-500/50"
+                    style={{ boxShadow: 'var(--glass-shadow-sm)' }}
                 >
                     Clear All
                 </button>
             </div>
+            
+            {/* Player List - Glassmorphism Container */}
             <div className="flex flex-wrap gap-2">
                 {roster.map(name => (
                     <div 
                         key={name} 
-                        className="px-3 py-1.5 rounded-xl bg-[var(--bg-secondary)] border border-[var(--color-border)] text-xs font-bold uppercase tracking-tight font-mono"
+                        className="px-3 py-2 rounded-xl bg-slate-900/50 backdrop-blur-sm border border-slate-700/50 text-xs font-bold uppercase tracking-wider text-white hover:bg-slate-800/50 transition-all duration-200"
+                        style={{ boxShadow: 'var(--glass-shadow-sm)' }}
                     >
                         {name}
                     </div>

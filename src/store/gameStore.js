@@ -1,6 +1,7 @@
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
 import { EVENT_TYPES, TEAMS } from '../constants/events.js';
+import { logger } from '../utils/logger.js';
 
 // Initial game state - single source of truth
 const INITIAL_GAME_STATE = {

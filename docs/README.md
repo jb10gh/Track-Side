@@ -4,7 +4,7 @@
 
 **Track Side** is a professional sports analytics platform designed for coaches, athletes, and team managers who want to capture, analyze, and share match data in real-time. Whether you're tracking a basketball game, soccer match, or any other sport, Track Side provides the tools you need to make data-driven decisions.
 
-[**Live Demo**](https://track-side.vercel.app) • [**Documentation**](./docs/)
+[**Live Demo**](https://track-side.vercel.app) • [**Documentation**](./01-GETTING-STARTED) • [**API Reference**](./03-TECHNICAL/api-reference.md)
 
 </div>
 
@@ -26,19 +26,46 @@ npm run dev
 # Open your browser to http://localhost:5173
 ```
 
-> **🎯 New to Track Side?** Start with our [**Getting Started Guide**](./docs/01-GETTING-STARTED/quick-start.md) for a complete walkthrough.
+> **🎯 New to Track Side?** Start with our [**Getting Started Guide**](./01-GETTING-STARTED/quick-start.md) for a complete walkthrough.
 
 ---
 
 ## 📚 **Documentation**
 
-Complete documentation is available in the [`docs/`](./docs/) directory:
+### **🚀 Getting Started**
+- [**Quick Start**](./01-GETTING-STARTED/quick-start.md) - Up and running in 5 minutes
+- [**Installation**](./01-GETTING-STARTED/installation.md) - Detailed setup instructions
+- [**First Game**](./01-GETTING-STARTED/first-game.md) - Track your first match
+- [**Troubleshooting**](./01-GETTING-STARTED/troubleshooting.md) - Common issues and solutions
 
-- **[Getting Started](./docs/01-GETTING-STARTED/)** - Quick start and setup
-- **[User Guide](./docs/02-USER-GUIDE/)** - Features and usage
-- **[Technical Docs](./docs/03-TECHNICAL/)** - Architecture and development
-- **[Development](./docs/04-DEVELOPMENT/)** - Contributing and testing
-- **[Deployment](./docs/05-DEPLOYMENT/)** - Production deployment
+### **👥 User Guide**
+- [**Game Tracking**](./02-USER-GUIDE/game-tracking.md) - Core features and workflows
+- [**Team Management**](./02-USER-GUIDE/team-management.md) - Managing teams and rosters
+- [**Data Export**](./02-USER-GUIDE/data-export.md) - Export and share your data
+- [**Mobile Features**](./02-USER-GUIDE/mobile-features.md) - Mobile-optimized experience
+
+### **⚙️ Technical Documentation**
+- [**Architecture**](./03-TECHNICAL/architecture.md) - System design and patterns
+- [**Components**](./03-TECHNICAL/components.md) - Component library and patterns
+- [**State Management**](./03-TECHNICAL/state-management.md) - Zustand store patterns
+- [**API Reference**](./03-TECHNICAL/api-reference.md) - Complete API documentation
+
+### **🛠️ Development**
+- [**Coding Standards**](./04-DEVELOPMENT/coding-standards.md) - Development guidelines
+- [**Testing**](./04-DEVELOPMENT/testing.md) - Testing framework and practices
+- [**Contributing**](./04-DEVELOPMENT/contributing.md) - How to contribute
+- [**Debugging**](./04-DEVELOPMENT/debugging.md) - Debugging techniques
+
+### **🚀 Deployment**
+- [**Production**](./05-DEPLOYMENT/production.md) - Production deployment guide
+- [**Environment Setup**](./05-DEPLOYMENT/environment-setup.md) - Environment configuration
+- [**Monitoring**](./05-DEPLOYMENT/monitoring.md) - Performance and error monitoring
+
+### **📋 Reference**
+- [**Architecture Decisions**](./06-ARCHITECTURE-DECISIONS/) - Complete ADR collection
+- [**Changelog**](./07-REFERENCE/changelog.md) - Version history and changes
+- [**Glossary**](./07-REFERENCE/glossary.md) - Terminology and concepts
+- [**Resources**](./07-REFERENCE/resources.md) - External resources and links
 
 ---
 
@@ -124,7 +151,7 @@ npm run test:coverage
 
 ## 🤝 **Contributing**
 
-We welcome contributions! Please read our [**Contributing Guide**](./docs/04-DEVELOPMENT/contributing.md) for details on our code of conduct and the process for submitting pull requests.
+We welcome contributions! Please read our [**Contributing Guide**](./04-DEVELOPMENT/contributing.md) for details on our code of conduct and the process for submitting pull requests.
 
 ### **Development Workflow**
 1. Fork the repository
@@ -144,7 +171,7 @@ We welcome contributions! Please read our [**Contributing Guide**](./docs/04-DEV
 
 ## 📄 **License**
 
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+This project is licensed under the MIT License - see the [LICENSE](../LICENSE) file for details.
 
 ---
 

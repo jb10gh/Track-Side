@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Trash2, X, Eye, ArrowRight } from 'lucide-react';
 import { MatchDetailView } from '../match/MatchDetailViewSimple';
+import '../../styles/design-tokens.css';
 
 export const MatchCard = ({ game, isConfirmingDelete, onConfirmDelete, onCancelDelete, onDelete }) => {
     const [showDetailView, setShowDetailView] = useState(false);
@@ -18,20 +19,22 @@ export const MatchCard = ({ game, isConfirmingDelete, onConfirmDelete, onCancelD
     }
 
     return (
-        <div className="group bg-slate-800/30 backdrop-blur-sm border border-slate-700/50 hover:border-slate-600/50 rounded-xl p-6 transition-all duration-300 hover:bg-slate-800/40 hover:shadow-xl hover:shadow-slate-900/10">
+        <div className="group bg-slate-900/50 backdrop-blur-sm border border-slate-700/50 hover:border-slate-600/50 rounded-xl p-6 transition-all duration-300 hover:bg-slate-900/70 hover:shadow-xl hover:shadow-slate-900/10" style={{ boxShadow: 'var(--glass-shadow-sm)' }}>
             <div className="flex items-center justify-between">
                 <div className="flex-1">
                     <div className="flex items-center space-x-4 mb-3">
                         <div className="text-center">
-                            <div className="text-3xl font-black bg-gradient-to-br from-pink-500 to-rose-600 bg-clip-text text-transparent">
+                            <div className="text-3xl font-bold bg-gradient-to-br from-pink-500 to-rose-600 bg-clip-text text-transparent">
                                 {game.myScore}
                             </div>
+                            <div className="text-xs font-bold uppercase tracking-wider text-pink-400 mt-1">Our Team</div>
                         </div>
                         <div className="text-2xl font-bold text-slate-400">-</div>
                         <div className="text-center">
-                            <div className="text-3xl font-black bg-gradient-to-br from-blue-500 to-cyan-600 bg-clip-text text-transparent">
+                            <div className="text-3xl font-bold bg-gradient-to-br from-blue-500 to-cyan-600 bg-clip-text text-transparent">
                                 {game.opponentScore}
                             </div>
+                            <div className="text-xs font-bold uppercase tracking-wider text-blue-400 mt-1">Opponent</div>
                         </div>
                     </div>
                     <div>

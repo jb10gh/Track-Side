@@ -3,7 +3,14 @@
     "private": true,
     "version": "1.0.0",
     "description": "Professional sports tracking application with unified theme system",
-    "keywords": ["sports", "tracking", "theme", "react", "vite", "pwa"],
+    "keywords": [
+        "sports",
+        "tracking",
+        "theme",
+        "react",
+        "vite",
+        "pwa"
+    ],
     "author": "Track Side Team",
     "license": "MIT",
     "type": "module",
@@ -27,6 +34,9 @@
         "zustand": "^4.4.1"
     },
     "devDependencies": {
+        "@testing-library/jest-dom": "^6.9.1",
+        "@testing-library/react": "^16.3.2",
+        "@testing-library/user-event": "^14.6.1",
         "@types/node": "^25.0.10",
         "@types/react": "^18.2.15",
         "@types/react-dom": "^18.2.7",

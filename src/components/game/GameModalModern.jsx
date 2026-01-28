@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Target, AlertTriangle, Check, User, Hash } from 'lucide-react';
 import { useGameStore, EVENT_TYPES, TEAMS } from '../../store/gameStore';
+import '../../styles/design-tokens.css';
 
 export const GameModal = ({ isOpen, type, team, initialLabel = '', initialIsPK = false, onConfirm, onCancel }) => {
     const { roster } = useGameStore();
@@ -30,11 +31,11 @@ export const GameModal = ({ isOpen, type, team, initialLabel = '', initialIsPK =
 
     return (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm">
-            <div className="w-full max-w-md bg-slate-900/95 backdrop-blur-xl border border-slate-700/50 rounded-2xl shadow-2xl shadow-black/50">
+            <div className="w-full max-w-md bg-slate-900/95 backdrop-blur-xl border border-slate-700/50 rounded-2xl shadow-2xl shadow-black/50" style={{ boxShadow: 'var(--glass-shadow)' }}>
                 {/* Header */}
                 <div className="flex items-center justify-between p-6 border-b border-slate-700/50">
                     <div className="space-y-1">
-                        <span className="text-xs font-semibold uppercase tracking-wider text-slate-400">
+                        <span className="text-xs font-bold uppercase tracking-wider text-slate-400">
                             {teamLabel} • {type}
                         </span>
                         <h2 className="text-2xl font-bold text-white">
@@ -120,6 +121,7 @@ export const GameModal = ({ isOpen, type, team, initialLabel = '', initialIsPK =
                             <div className="flex items-center justify-between p-4 bg-slate-800/50 rounded-xl border border-slate-600/50">
                                 <span className="font-semibold text-white">Penalty Kick?</span>
                                 <button
+                                    type="button"
                                     onClick={() => setIsPK(!isPK)}
                                     className={`w-10 h-10 rounded-lg flex items-center justify-center transition-all duration-200 ${
                                         isPK 

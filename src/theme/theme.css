@@ -49,23 +49,25 @@
 
   /* ===== TEAM COLORS ===== */
   
-  /* Our Team - Muted */
-  --team-our-primary: #E91E63;       /* Muted Pink */
-  --team-our-light: #F48FB1;         /* Light Pink */
-  --team-our-dark: #C2185B;          /* Dark Pink */
-  --team-our-bg: rgba(233, 30, 99, 0.1); /* Subtle Pink background */
-  --team-our-border: rgba(233, 30, 99, 0.3); /* Subtle Pink border */
-  --team-our-text: #E8E8E8;          /* Soft White text */
-  --team-our-shadow: 0 0 20px rgba(233, 30, 99, 0.3); /* Subtle Pink glow */
+  /* Our Team - Black & Hot Pink Brand */
+  --team-our-primary: #000000;         /* Pure Black */
+  --team-our-light: #FF1493;           /* Hot Pink */
+  --team-our-dark: #8B0000;            /* Dark Hot Pink */
+  --team-our-bg: rgba(0, 0, 0, 0.8);   /* Black background */
+  --team-our-border: #FF1493;          /* Hot Pink border */
+  --team-our-text: #FFFFFF;            /* Pure White text */
+  --team-our-shadow: 0 0 25px rgba(255, 20, 147, 0.6); /* Hot Pink glow */
+  --team-our-gradient: linear-gradient(135deg, #000000 0%, #FF1493 100%); /* Black to Pink */
 
-  /* Their Team - Muted */
-  --team-their-primary: #9C27B0;     /* Muted Purple */
-  --team-their-light: #BA68C8;       /* Light Purple */
-  --team-their-dark: #7B1FA2;        /* Dark Purple */
-  --team-their-bg: rgba(156, 39, 176, 0.1); /* Subtle Purple background */
-  --team-their-border: rgba(156, 39, 176, 0.3); /* Subtle Purple border */
-  --team-their-text: #E8E8E8;        /* Soft White text */
-  --team-their-shadow: 0 0 20px rgba(156, 39, 176, 0.3); /* Subtle Purple glow */
+  /* Their Team - Electric Blue & Cyan Contrast */
+  --team-their-primary: #007BFF;       /* Electric Blue */
+  --team-their-light: #00CED1;         /* Cyan */
+  --team-their-dark: #0056B3;         /* Dark Blue */
+  --team-their-bg: rgba(0, 123, 255, 0.1); /* Subtle Blue background */
+  --team-their-border: #00CED1;        /* Cyan border */
+  --team-their-text: #FFFFFF;         /* Pure White text */
+  --team-their-shadow: 0 0 25px rgba(0, 206, 209, 0.6); /* Cyan glow */
+  --team-their-gradient: linear-gradient(135deg, #007BFF 0%, #00CED1 100%); /* Blue to Cyan */
 
   /* ===== TYPOGRAPHY ===== */
   
@@ -288,7 +290,7 @@
   --modal-overlay: var(--bg-overlay);
 
   /* Base component themes */
-  body {
+  :is(body) {
     background-color: var(--bg-primary);
     color: var(--text-primary);
     font-family: var(--font-family-primary);

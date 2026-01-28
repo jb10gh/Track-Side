@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { X, Download, Share2, FileText, Check } from 'lucide-react';
+import '../../styles/design-tokens.css';
 
 export const EndGameConfirmation = ({ isOpen, onClose, onConfirm, gameData, onExport }) => {
     const [selectedExport, setSelectedExport] = useState('none');
@@ -18,7 +19,7 @@ export const EndGameConfirmation = ({ isOpen, onClose, onConfirm, gameData, onEx
 
     return (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm">
-            <div className="w-full max-w-md bg-slate-900/95 backdrop-blur-xl border border-slate-700/50 rounded-2xl shadow-2xl shadow-black/50">
+            <div className="w-full max-w-md bg-slate-900/95 backdrop-blur-xl border border-slate-700/50 rounded-2xl shadow-2xl shadow-black/50" style={{ boxShadow: 'var(--glass-shadow)' }}>
                 {/* Header */}
                 <div className="flex items-center justify-between p-6 border-b border-slate-700/50">
                     <div className="space-y-1">

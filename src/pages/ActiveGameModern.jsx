@@ -13,9 +13,11 @@ import { useGameTimer } from '../hooks/useGameTimer';
 import { downloadCSV, copyEnhancedSummary } from '../utils/export';
 import { Button, IconButton } from '../components/ui';
 import { EndGameConfirmation } from '../components/game/EndGameConfirmationModern';
+import '../styles/design-tokens.css';
 
 export const ActiveGame = () => {
     const navigate = useNavigate();
+    
     const {
         activeGameId,
         opponentName,
@@ -108,24 +110,33 @@ export const ActiveGame = () => {
     };
 
     const HeaderActions = () => (
-        <div className="flex items-center space-x-3">
-            <IconButton 
-                variant="ghost" 
-                size="sm"
+        <div className="flex items-center space-x-2 sm:space-x-3">
+            {/* Copy Summary Button */}
+            <button
                 onClick={copySummary}
-                className="text-slate-400 hover:text-white hover:bg-slate-800/50"
+                className="group relative p-2 sm:p-2.5 bg-slate-800/50 hover:bg-slate-700/50 border border-slate-700/50 hover:border-slate-600/50 rounded-lg transition-all duration-200 transform hover:scale-105"
+                aria-label="Copy game summary"
             >
-                {copied ? <ClipboardCheck size={16} /> : <Share2 size={16} />}
-            </IconButton>
+                {copied ? (
+                    <ClipboardCheck size={16} className="text-emerald-400" />
+                ) : (
+                    <Share2 size={16} className="text-slate-400 group-hover:text-white transition-colors" />
+                )}
+                {copied && (
+                    <span className="absolute -top-8 left-1/2 transform -translate-x-1/2 text-xs font-medium text-emerald-400 bg-slate-900 px-2 py-1 rounded whitespace-nowrap">
+                        Copied!
+                    </span>
+                )}
+            </button>
             
-            <IconButton 
-                variant="ghost" 
-                size="sm"
+            {/* Download CSV Button */}
+            <button
                 onClick={() => downloadCSV({ opponentName, myScore, opponentScore, events })}
-                className="text-slate-400 hover:text-white hover:bg-slate-800/50"
+                className="group relative p-2 sm:p-2.5 bg-slate-800/50 hover:bg-slate-700/50 border border-slate-700/50 hover:border-slate-600/50 rounded-lg transition-all duration-200 transform hover:scale-105"
+                aria-label="Download CSV"
             >
-                <FileDown size={16} />
-            </IconButton>
+                <FileDown size={16} className="text-slate-400 group-hover:text-white transition-colors" />
+            </button>
             
             <Button 
                 variant="danger" 
@@ -148,40 +159,50 @@ export const ActiveGame = () => {
             <div className="bg-slate-900/50 backdrop-blur-sm border-b border-slate-800/50">
                 <div className="max-w-4xl mx-auto px-4 py-6">
                     <div className="text-center">
-                        <h2 className="text-3xl font-bold text-white mb-2">
-                            vs <span className="bg-gradient-to-br from-blue-500 to-cyan-600 bg-clip-text text-transparent">{opponentName}</span>
+                        <h2 className="text-2xl sm:text-3xl font-bold text-white mb-2">
+                            vs <span className="bg-gradient-to-br from-blue-500 to-cyan-600 bg-clip-text text-transparent font-bold">{opponentName}</span>
                         </h2>
-                        <div className="flex items-center justify-center space-x-6 text-sm text-slate-400">
-                            <span>Match in Progress</span>
-                            <span>•</span>
-                            <span>{events.length} events</span>
-                            <span>•</span>
-                            <span className={isRunning ? "text-emerald-400" : "text-slate-500"}>
+                        <div className="flex flex-col sm:flex-row items-center justify-center space-y-1 sm:space-y-0 sm:space-x-4 text-xs sm:text-sm text-slate-400">
+                            <span className="flex items-center">
+                                <span className={`w-2 h-2 rounded-full mr-2 ${isRunning ? 'bg-emerald-400 animate-pulse' : 'bg-slate-500'}`}></span>
                                 {isRunning ? "Live" : "Not Started"}
                             </span>
+                            <span className="hidden sm:inline">•</span>
+                            <span>{events.length} events</span>
+                            <span className="hidden sm:inline">•</span>
+                            <span className="text-xs bg-slate-700/50 px-2 py-1 rounded">Match in Progress</span>
                         </div>
                     </div>
                 </div>
             </div>
 
-            <div className="space-y-8">
-                <ScoreBoard 
-                    myScore={myScore} 
-                    opponentScore={opponentScore} 
-                    displayTime={displayTime} 
-                    isRunning={isRunning} 
-                    onToggleTimer={toggleTimer} 
-                />
+            <div className="space-y-6 sm:space-y-8">
+                {/* Score Board */}
+                <div className="bg-slate-900/50 backdrop-blur-sm rounded-2xl border border-slate-700/50 p-4 sm:p-6" style={{ boxShadow: 'var(--glass-shadow-sm)' }}>
+                    <ScoreBoard 
+                        myScore={myScore} 
+                        opponentScore={opponentScore} 
+                        displayTime={displayTime} 
+                        isRunning={isRunning} 
+                        onToggleTimer={toggleTimer} 
+                    />
+                </div>
 
-                <ActionGrid onAction={handleAction} isTimerRunning={isRunning} />
+                {/* Action Grid */}
+                <div className="bg-slate-900/50 backdrop-blur-sm rounded-2xl border border-slate-700/50 p-4 sm:p-6" style={{ boxShadow: 'var(--glass-shadow-sm)' }}>
+                    <ActionGrid onAction={handleAction} isTimerRunning={isRunning} />
+                </div>
 
-                <EventTimeline 
-                    events={events} 
-                    onUndo={undoLastEvent} 
-                    onEdit={setEditingEvent}
-                    onDelete={deleteEvent}
-                    formatTime={formatTime} 
-                />
+                {/* Event Timeline */}
+                <div className="bg-slate-900/50 backdrop-blur-sm rounded-2xl border border-slate-700/50 p-4 sm:p-6" style={{ boxShadow: 'var(--glass-shadow-sm)' }}>
+                    <EventTimeline 
+                        events={events} 
+                        onUndo={undoLastEvent} 
+                        onEdit={setEditingEvent}
+                        onDelete={deleteEvent}
+                        formatTime={formatTime} 
+                    />
+                </div>
             </div>
 
             <GameModal

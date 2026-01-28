@@ -4,6 +4,7 @@ import { Mail, Download, Copy, Check, AlertCircle, X } from 'lucide-react';
 import { nativeEmailService } from '../../services/nativeEmailService';
 import { copyEnhancedSummary } from '../../utils/export';
 import { useTheme, useTeamTheme } from '../../theme/useTheme';
+import '../../styles/design-tokens.css';
 
 /**
  * Streamlined Export Modal Component

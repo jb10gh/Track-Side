@@ -1,0 +1,69 @@
+/* Glassmorphism Dark-Mode Design Tokens */
+
+/* Primary Colors */
+:root {
+  --primary-pink: #FF1493;
+  --primary-pink-light: #FF69B4;
+  --primary-pink-dark: #C71585;
+  
+  --primary-blue: #00CED1;
+  --primary-blue-light: #40E0D0;
+  --primary-blue-dark: #00ACC1;
+  
+  /* Surface Colors - Glassmorphism */
+  --surface-card: rgba(15, 23, 42, 0.5); /* slate-900/50 */
+  --surface-card-hover: rgba(15, 23, 42, 0.7); /* slate-900/70 */
+  --surface-card-light: rgba(15, 23, 42, 0.3); /* slate-900/30 */
+  
+  /* Text Colors */
+  --text-primary: #FFFFFF;
+  --text-secondary: #94A3B8; /* slate-400 */
+  --text-muted: #64748B; /* slate-500 */
+  
+  /* Border Colors */
+  --border-primary-pink: var(--primary-pink);
+  --border-primary-blue: var(--primary-blue);
+  --border-subtle: rgba(148, 163, 184, 0.2); /* slate-400/20 */
+  
+  /* Team Names */
+  --home-team-name: "HOME";
+  --away-team-name: "AWAY";
+  
+  /* Glassmorphism Effects */
+  --backdrop-blur: blur(12px);
+  --glass-border: 1px solid rgba(255, 255, 255, 0.1);
+  --glass-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+  --glass-shadow-sm: 0 4px 16px rgba(0, 0, 0, 0.2);
+  
+  /* Typography */
+  --font-h3: 1.875rem; /* 30px */
+  --font-h3-weight: 700;
+  --font-small: 0.875rem; /* 14px */
+  --font-small-weight: 600;
+  
+  /* Spacing */
+  --spacing-xs: 0.5rem;
+  --spacing-sm: 1rem;
+  --spacing-md: 1.5rem;
+  --spacing-lg: 2rem;
+  
+  /* Transitions */
+  --transition-fast: 150ms;
+  --transition-normal: 200ms;
+  --transition-slow: 300ms;
+  
+  /* Border Radius */
+  --radius-sm: 0.5rem;
+  --radius-md: 0.75rem;
+  --radius-lg: 1rem;
+  --radius-xl: 1.5rem;
+}
+
+/* Dark mode overrides */
+@media (prefers-color-scheme: dark) {
+  :root {
+    --surface-card: rgba(15, 23, 42, 0.6);
+    --surface-card-hover: rgba(15, 23, 42, 0.8);
+    --surface-card-light: rgba(15, 23, 42, 0.4);
+  }
+}
