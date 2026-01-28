@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import { Edit3, Trash2, Save, X, Clock, Goal, AlertTriangle } from 'lucide-react';
-import { EVENT_TYPES, TEAMS } from '../../store/gameStore';
+import { EVENT_TYPES, TEAMS } from '../../constants/events.js';
 
 export const EditableEventItem = ({ event, isEditing, onUpdate, onDelete }) => {
     const [isEditingEvent, setIsEditingEvent] = useState(false);

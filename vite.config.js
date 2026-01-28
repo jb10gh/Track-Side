@@ -9,11 +9,11 @@ export default defineConfig({
             registerType: 'autoUpdate',
             includeAssets: ['favicon.ico', 'pwa-icon.png'],
             manifest: {
-                name: 'TrackSide',
-                short_name: 'TrackSide',
+                name: 'Track Side',
+                short_name: 'Track Side',
                 description: 'Professional Sports Tracking App',
-                theme_color: '#ff6b35',
-                background_color: '#000000',
+                theme_color: '#FF1493',
+                background_color: '#1a1a1a',
                 display: 'standalone',
                 icons: [
                     {

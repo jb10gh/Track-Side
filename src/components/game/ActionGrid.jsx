@@ -7,6 +7,12 @@ export const ActionGrid = ({ onAction }) => {
     const { getSpacingValue } = useTheme();
     const ourTeam = useTeamTheme('our');
     const theirTeam = useTeamTheme('their');
+    
+    const handleAction = (actionType, team) => {
+        // Execute action directly
+        onAction(actionType, team);
+        return true;
+    };
 
     return (
         <div 
@@ -18,7 +24,7 @@ export const ActionGrid = ({ onAction }) => {
             }}
         >
             <button 
-                onClick={() => onAction(EVENT_TYPES.GOAL, TEAMS.US)} 
+                onClick={() => handleAction(EVENT_TYPES.GOAL, TEAMS.US)} 
                 className="rounded-xl p-4 transition-all transform hover:scale-105 active:scale-95 flex flex-col items-center gap-2"
                 style={{
                     backgroundColor: ourTeam.colors.background,
@@ -55,7 +61,7 @@ export const ActionGrid = ({ onAction }) => {
             </button>
 
             <button 
-                onClick={() => onAction(EVENT_TYPES.GOAL, TEAMS.THEM)} 
+                onClick={() => handleAction(EVENT_TYPES.GOAL, TEAMS.THEM)} 
                 className="rounded-xl p-4 transition-all transform hover:scale-105 active:scale-95 flex flex-col items-center gap-2"
                 style={{
                     backgroundColor: theirTeam.colors.background,
@@ -91,26 +97,31 @@ export const ActionGrid = ({ onAction }) => {
                 </span>
             </button>
 
-            <button 
-                onClick={() => onAction(EVENT_TYPES.PENALTY, TEAMS.US)} 
-                className="rounded-xl p-4 transition-all transform hover:scale-105 active:scale-95 flex flex-col items-center gap-2"
-                style={{
-                    backgroundColor: ourTeam.colors.background,
-                    border: `2px solid ${ourTeam.colors.border}`,
-                    borderRadius: 'var(--radius-xl)',
-                    padding: getSpacingValue('md'),
-                    transition: 'var(--transition-normal)',
-                    boxShadow: ourTeam.colors.shadow,
-                }}
-                onMouseEnter={(e) => {
-                    e.currentTarget.style.transform = 'scale(1.05)';
-                    e.currentTarget.style.boxShadow = ourTeam.colors.shadow;
-                }}
-                onMouseLeave={(e) => {
-                    e.currentTarget.style.transform = 'scale(1)';
-                    e.currentTarget.style.boxShadow = ourTeam.colors.shadow;
-                }}
-            >
+                <button 
+                    onClick={() => handleAction(EVENT_TYPES.PENALTY, TEAMS.US)} 
+                    className={`rounded-xl p-4 transition-all transform hover:scale-105 active:scale-95 flex flex-col items-center gap-2 ${
+                        eventsBlocked ? 'opacity-50 cursor-not-allowed' : ''
+                    }`}
+                    style={{
+                        backgroundColor: ourTeam.colors.background,
+                        border: `2px solid ${ourTeam.colors.border}`,
+                        borderRadius: 'var(--radius-xl)',
+                        padding: getSpacingValue('md'),
+                        transition: 'var(--transition-normal)',
+                        boxShadow: ourTeam.colors.shadow,
+                    }}
+                    onMouseEnter={(e) => {
+                        if (!eventsBlocked) {
+                            e.currentTarget.style.transform = 'scale(1.05)';
+                            e.currentTarget.style.boxShadow = ourTeam.colors.shadow;
+                        }
+                    }}
+                    onMouseLeave={(e) => {
+                        e.currentTarget.style.transform = 'scale(1)';
+                        e.currentTarget.style.boxShadow = ourTeam.colors.shadow;
+                    }}
+                    disabled={eventsBlocked}
+                >
                 <AlertTriangle 
                     size={24} 
                     strokeWidth={2.5} 
@@ -131,7 +142,7 @@ export const ActionGrid = ({ onAction }) => {
             </button>
 
             <button 
-                onClick={() => onAction(EVENT_TYPES.PENALTY, TEAMS.THEM)} 
+                onClick={() => handleAction(EVENT_TYPES.PENALTY, TEAMS.THEM)} 
                 className="rounded-xl p-4 transition-all transform hover:scale-105 active:scale-95 flex flex-col items-center gap-2"
                 style={{
                     backgroundColor: theirTeam.colors.background,

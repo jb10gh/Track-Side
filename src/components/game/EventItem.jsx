@@ -1,14 +1,21 @@
 import React from 'react';
-import { Target, AlertTriangle, Pencil } from 'lucide-react';
+import { Target, AlertTriangle, Pencil, Trash2 } from 'lucide-react';
 import { EVENT_TYPES, TEAMS } from '../../store/gameStore';
 
 /**
  * Clean Code: EventItem component.
  * Represents a single event entry in the timeline.
  */
-export const EventItem = ({ event, onEdit, formatTime }) => {
+export const EventItem = ({ event, onEdit, onDelete, formatTime }) => {
     const isUs = event.team === TEAMS.US;
     const isGoal = event.type === EVENT_TYPES.GOAL;
+
+    const handleDelete = (e) => {
+        e.stopPropagation(); // Prevent triggering the edit click
+        if (window.confirm(`Are you sure you want to delete this ${isGoal ? 'goal' : 'penalty'} event?`)) {
+            onDelete(event.id);
+        }
+    };
 
     return (
         <div
@@ -39,7 +46,14 @@ export const EventItem = ({ event, onEdit, formatTime }) => {
                         <span className="font-black text-xl italic tracking-tight uppercase leading-tight">
                             {event.label || (isGoal ? 'Unnamed Goal' : 'Unnamed Penalty')}
                         </span>
-                        <Pencil size={12} className="opacity-0 group-hover:opacity-40 transition-opacity" />
+                        <div className="flex items-center gap-1 opacity-0 group-hover:opacity-60 transition-opacity">
+                            <Pencil size={12} className="hover:text-[var(--color-brand)] transition-colors" />
+                            <Trash2 
+                                size={12} 
+                                className="hover:text-[var(--color-danger)] transition-colors cursor-pointer" 
+                                onClick={handleDelete}
+                            />
+                        </div>
                     </div>
                 </div>
                 <div className={isUs ? 'text-[var(--team-our-primary)]' : 'text-[var(--team-their-primary)]'}>

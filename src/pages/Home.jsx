@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useGameStore } from '../store/gameStore';
-import { Shell } from '../components/layout/Shell';
-import { NewMatchForm } from '../components/home/NewMatchForm';
+import { Shell } from '../components/layout/ShellModern';
+import { NewMatchForm } from '../components/home/NewMatchFormModern';
 import { SquadRoster } from '../components/home/SquadRoster';
 import { MatchArchive } from '../components/home/MatchArchive';
 

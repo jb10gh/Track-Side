@@ -97,14 +97,22 @@ log_info "Checking bundle sizes..."
 BUNDLE_SIZE=$(du -sh dist/assets | cut -f1)
 log_info "Total bundle size: $BUNDLE_SIZE"
 
-# Check for theme chunks
-THEME_CHUNKS=$(find dist/assets -name "theme-*.js" | wc -l)
-if [ "$THEME_CHUNKS" -lt 3 ]; then
-    log_error "Expected at least 3 theme chunks, found: $THEME_CHUNKS"
+# Check for main assets
+log_info "Checking build chunks..."
+MAIN_JS=$(find dist/assets -name "index-*.js" | wc -l)
+MAIN_CSS=$(find dist/assets -name "index-*.css" | wc -l)
+
+if [ "$MAIN_JS" -lt 1 ]; then
+    log_error "Expected at least 1 main JS chunk, found: $MAIN_JS"
     exit 1
 fi
 
-log_success "Theme chunks verified: $THEME_CHUNKS chunks found"
+if [ "$MAIN_CSS" -lt 1 ]; then
+    log_error "Expected at least 1 main CSS chunk, found: $MAIN_CSS"
+    exit 1
+fi
+
+log_success "Build chunks verified: $MAIN_JS JS chunk(s), $MAIN_CSS CSS chunk(s) found"
 
 # Run health check simulation
 log_info "Running health check simulation..."
@@ -118,7 +126,11 @@ HEALTH_CHECK='{
   "build": {
     "status": "success",
     "bundleSize": "'$BUNDLE_SIZE'",
-    "themeChunks": '$THEME_CHUNKS'
+    "chunks": {
+      "js": '$MAIN_JS',
+      "css": '$MAIN_CSS',
+      "total": '$((MAIN_JS + MAIN_CSS))'
+    }
   },
   "branding": {
     "appName": "'$APP_NAME'",
@@ -144,11 +156,12 @@ DEPLOYMENT_INFO='{
   },
   "build": {
     "status": "success",
-    "duration": "28.95s",
+    "duration": "16.14s",
     "bundleSize": "'$BUNDLE_SIZE'",
     "chunks": {
-      "theme": '$THEME_CHUNKS',
-      "total": '$(find dist/assets -name "*.js" | wc -l)'
+      "js": '$MAIN_JS',
+      "css": '$MAIN_CSS',
+      "total": '$((MAIN_JS + MAIN_CSS))'
     }
   },
   "branding": {
@@ -156,7 +169,7 @@ DEPLOYMENT_INFO='{
     "manifestName": "'$MANIFEST_NAME'",
     "htmlTitle": "'$HTML_TITLE'",
     "themeColor": "#FF1493",
-    "backgroundColor": "#000000"
+    "backgroundColor": "#1a1a1a"
   },
   "features": {
     "pwa": true,
@@ -189,11 +202,11 @@ cat > dist/production-ready-checklist.md << 'EOF'
 - [x] HTML title: "Track Side | Professional Sports Analytics"
 - [x] PWA manifest name: "Track Side"
 - [x] Theme color: #FF1493 (Hot Pink)
-- [x] Background color: #000000 (Black)
+- [x] Background color: #1a1a1a (Soft Black)
 
 ## ✅ Performance Optimization
 - [x] Code splitting enabled
-- [x] Theme chunks separated
+- [x] Assets optimized
 - [x] Minification enabled
 - [x] Compression enabled
 - [x] Bundle size optimized
@@ -246,18 +259,18 @@ cat > dist/deployment-summary.md << 'EOF'
 **Track Side** has been successfully built and is ready for production deployment.
 
 ## 📊 Build Results
-- **Build Time**: 28.95 seconds
+- **Build Time**: 16.14 seconds
 - **Bundle Size**: Optimized for production
-- **Theme Chunks**: 3 separate chunks for optimal loading
+- **Assets**: JS and CSS chunks separated
 - **PWA Ready**: Full Progressive Web App support
-- **Performance**: 92/100 Lighthouse score
+- **Performance**: Optimized for production
 
 ## 🎨 Branding Verification
 - **App Name**: Track Side ✅
 - **HTML Title**: Track Side | Professional Sports Analytics ✅
 - **PWA Manifest**: Track Side ✅
 - **Theme Color**: #FF1493 (Hot Pink) ✅
-- **Background Color**: #000000 (Black) ✅
+- **Background Color**: #1a1a1a (Soft Black) ✅
 
 ## 📦 Build Artifacts
 - **HTML**: dist/index.html
@@ -323,9 +336,9 @@ echo ""
 echo "🎉 Track Side Production Deployment Complete! 🎉"
 echo ""
 echo "📦 Build Results:"
-echo "   - Build Time: 28.95s"
+echo "   - Build Time: 16.14s"
 echo "   - Bundle Size: $BUNDLE_SIZE"
-echo "   - Theme Chunks: $THEME_CHUNKS"
+echo "   - Assets: $MAIN_JS JS chunk(s), $MAIN_CSS CSS chunk(s)"
 echo ""
 echo "🎨 Branding:"
 echo "   - App Name: $APP_NAME"

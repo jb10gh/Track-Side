@@ -1,17 +1,16 @@
 import React, { useState } from 'react';
 import { useNavigate, Navigate } from 'react-router-dom';
-import { ClipboardCheck, Share2, X, FileDown } from 'lucide-react';
+import { ClipboardCheck, Share2, X, FileDown, Clock, Play, Pause } from 'lucide-react';
 import { useGameStore, EVENT_TYPES, TEAMS } from '../store/gameStore';
-import { Shell } from '../components/layout/Shell';
+import { Shell } from '../components/layout/ShellSimple';
 import { GameModal } from '../components/game/GameModal';
 import { StreamlinedExportModal } from '../components/game/StreamlinedExportModal';
 import { TimerInvocationModal } from '../components/game/TimerInvocationModal';
-import { ScoreBoard } from '../components/game/ScoreBoard';
-import { ActionGrid } from '../components/game/ActionGrid';
-import { EventTimeline } from '../components/game/EventTimeline';
+import { ScoreBoard } from '../components/game/ScoreBoardSimple';
+import { ActionGrid } from '../components/game/ActionGridSimple';
+import { EventTimeline } from '../components/game/EventTimelineSimple';
 import { useGameTimer } from '../hooks/useGameTimer';
 import { downloadCSV, copyEnhancedSummary } from '../utils/export';
-import { EnhancedGameHeader } from '../components/header';
 import { Button, IconButton } from '../components/ui';
 import { EndGameConfirmation } from '../components/game/EndGameConfirmation';
 
@@ -43,15 +42,9 @@ export const ActiveGame = () => {
     const [modalState, setModalState] = useState({ isOpen: false, type: '', team: '' });
     const [editingEvent, setEditingEvent] = useState(null);
     const [copied, setCopied] = useState(false);
-    const [confirmingFinish, setConfirmingFinish] = useState(false);
     const [showStreamlinedExport, setShowStreamlinedExport] = useState(false);
     const [showTimerModal, setShowTimerModal] = useState(false);
     const [showEndConfirmation, setShowEndConfirmation] = useState(false);
-    
-    // Create timer state for header
-    const timerState = {
-        status: isRunning ? 'RUNNING' : 'NOT_STARTED'
-    };
 
     // Check timer state on component mount
     React.useEffect(() => {
@@ -62,15 +55,8 @@ export const ActiveGame = () => {
     React.useEffect(() => {
         if (events.length === 1 && !isRunning && !timerInvocation.reminderDismissed) {
             setShowTimerModal(true);
-            invokeTimer('first_event');
         }
-    }, [events.length, isRunning]);
-
-    if (!activeGameId) return <Navigate to="/" />;
-
-    const handleAction = (type, team) => {
-        setModalState({ isOpen: true, type, team });
-    };
+    }, [events.length, isRunning, timerInvocation.reminderDismissed]);
 
     const handleModalConfirm = (label, meta) => {
         if (editingEvent) {
@@ -80,6 +66,10 @@ export const ActiveGame = () => {
             addEvent(modalState.type, modalState.team, label, meta);
             setModalState({ isOpen: false, type: '', team: '' });
         }
+    };
+
+    const handleAction = (actionType, team) => {
+        setModalState({ isOpen: true, type: actionType, team });
     };
 
     const handleConfirmEnd = (exportOption) => {
@@ -124,33 +114,14 @@ export const ActiveGame = () => {
         navigate('/');
     };
 
-    const handleSkipAndFinish = () => {
-        finishGame();
-        navigate('/');
-    };
-
-    const copySummary = () => {
-        const summary = [
-            `Match: Us vs ${opponentName}`,
-            `Final: ${myScore}-${opponentScore}`,
-            '------------------',
-            ...events.slice().reverse().map(e => {
-                const typeStr = e.meta?.isPK ? 'Goal (PK)' : e.type.charAt(0).toUpperCase() + e.type.slice(1);
-                return `[${formatTime(e.gameTime)}] ${typeStr} (${e.team === TEAMS.US ? 'Us' : 'Them'}) - ${e.label || 'Unnamed'}`;
-            })
-        ].join('\n');
-
-        navigator.clipboard.writeText(summary);
+    const copySummary = async () => {
+        await copyEnhancedSummary({ opponentName, myScore, opponentScore, events }, formatTime, formatTimeForExport);
         setCopied(true);
         setTimeout(() => setCopied(false), 2000);
     };
 
     const HeaderActions = () => (
-        <div className="header-actions" style={{
-            display: 'flex',
-            alignItems: 'center',
-            gap: '12px'
-        }}>
+        <div className="header-actions flex items-center gap-3">
             <IconButton 
                 variant="ghost" 
                 size="sm"
@@ -180,45 +151,44 @@ export const ActiveGame = () => {
         </div>
     );
 
+    if (!activeGameId) {
+        return <Navigate to="/" replace />;
+    }
+
     return (
-        <div className="active-game-container" style={{ minHeight: '100vh', backgroundColor: 'var(--bg-primary)' }}>
-            {/* Enhanced Game Header */}
-            <EnhancedGameHeader 
-                opponentName={opponentName}
-                ourScore={myScore}
-                opponentScore={opponentScore}
-                timerState={timerState}
-                displayTime={displayTime}
-                headerActions={<HeaderActions />}
-            />
-            
-            <div className="game-content" style={{ padding: '0 24px' }}>
-                {/* Game Controls */}
-                <div className="game-controls" style={{ marginBottom: '24px' }}>
-                    <ScoreBoard 
-                        myScore={myScore} 
-                        opponentScore={opponentScore} 
-                        displayTime={displayTime} 
-                        isRunning={isRunning} 
-                        onToggleTimer={toggleTimer} 
-                    />
+        <Shell title="Track Side Analytics" headerAction={<HeaderActions />}>
+            {/* Simple Score Display Only */}
+            <div className="bg-black border-b border-gray-800 p-4">
+                <div className="text-center py-4">
+                    <div className="text-5xl font-black">
+                        <span className="text-pink-500">{myScore}</span>
+                        <span className="mx-4 text-white">-</span>
+                        <span className="text-blue-500">{opponentScore}</span>
+                    </div>
+                    <p className="text-sm text-gray-400 mt-2">
+                        vs {opponentName} • {events.length} events • {isRunning ? 'Live' : 'Not Started'}
+                    </p>
                 </div>
-                
-                {/* Action Grid with Alerts */}
-                <div className="action-section" style={{ marginBottom: '24px' }}>
-                    <ActionGrid onAction={handleAction} timerState={timerState} />
-                </div>
-                
-                {/* Event Timeline */}
-                <div className="timeline-section">
-                    <EventTimeline 
-                        events={events} 
-                        onUndo={undoLastEvent} 
-                        onEdit={setEditingEvent}
-                        onDelete={deleteEvent}
-                        formatTime={formatTime} 
-                    />
-                </div>
+            </div>
+
+            <div className="flex flex-col gap-6 py-6">
+                <ScoreBoard 
+                    myScore={myScore} 
+                    opponentScore={opponentScore} 
+                    displayTime={displayTime} 
+                    isRunning={isRunning} 
+                    onToggleTimer={toggleTimer} 
+                />
+
+                <ActionGrid onAction={handleAction} />
+
+                <EventTimeline 
+                    events={events} 
+                    onUndo={undoLastEvent} 
+                    onEdit={setEditingEvent}
+                    onDelete={deleteEvent}
+                    formatTime={formatTime} 
+                />
             </div>
 
             <GameModal
@@ -290,6 +260,6 @@ export const ActiveGame = () => {
                 }}
                 onExport={handleExport}
             />
-        </div>
+        </Shell>
     );
 };
